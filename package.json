@@ -1,0 +1,24 @@
+{
+  "name": "flippulator",
+  "version": "0.1.0",
+  "description": "A Flipper Zero emulator",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milk-Cool/flippulator.git"
+  },
+  "keywords": [
+    "flipper",
+    "zero",
+    "emulator"
+  ],
+  "author": "Milk_Cool",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Milk-Cool/flippulator/issues"
+  },
+  "homepage": "https://github.com/Milk-Cool/flippulator#readme"
+}
