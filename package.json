@@ -6,6 +6,9 @@
   "scripts": {
     "test": "node index.js"
   },
+  "bin": {
+    "flippulator": "index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Milk-Cool/flippulator.git"
