@@ -4,7 +4,7 @@
   "description": "A Flipper Zero emulator",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "start": "node index.js"
   },
   "bin": {
     "flippulator": "index.js"
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/Milk-Cool/flippulator/issues"
   },
-  "homepage": "https://github.com/Milk-Cool/flippulator#readme"
+  "homepage": "https://github.com/Milk-Cool/flippulator#readme",
+  "dependencies": {
+    "fs-extra": "^11.1.1"
+  }
 }

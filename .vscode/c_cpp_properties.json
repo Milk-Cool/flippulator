@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "name": "Default",
+            "intelliSenseMode": "clang-x64",
+            "includePath": ["${workspaceFolder}/flipper", "${workspaceFolder}/helpers"]
+        }
+    ],
+    "version": 4
+}

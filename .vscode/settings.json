@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "stddef.h": "c",
+        "stdint.h": "c",
+        "gui.h": "c",
+        "canvas_i.h": "c",
+        "core_defines.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "record.h": "c",
+        "crash.h": "c"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none"
+}
