@@ -4,10 +4,11 @@ Based on [Flipper Zero Firmware](https://github.com/flipperdevices/flipperzero-f
 
 ## Requirements
 A linux system\
-Packages `make`, `gcc`
+Packages `make`, `gcc`, `libncurses5`
 
 ## Usage
 
 ## Limitations
 * The main function cannot be called `main`
 * `furi.h` must be included
+* `furi.h` includes `ncurses.h`, which reserves some function names

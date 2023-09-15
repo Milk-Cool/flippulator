@@ -1,5 +1,4 @@
 #include "furi.h"
-#include <stdio.h>
 
 /*void furi_assert(void* expr) {
     if(!expr)
