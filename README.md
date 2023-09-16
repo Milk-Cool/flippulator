@@ -18,3 +18,7 @@ Packages `make`, `gcc`, `libncurses5`
 ## TODOs
 - [ ] Use GTK instead of ncurses
 - [ ] Write support for FuriTypes (FuriString, FuriMutex, etc.)
+
+
+### Uhm, akstually, it is not an emulator 🤓☝️...
+Yes, it is not. It just compiles flipper applications for your computer.
