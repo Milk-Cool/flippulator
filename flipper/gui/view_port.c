@@ -44,6 +44,8 @@ ViewPort* view_port_alloc() {
     ViewPort* view_port = malloc(sizeof(ViewPort));
     view_port->orientation = ViewPortOrientationHorizontal;
     view_port->is_enabled = true;
+    view_port->width = 128;
+    view_port->height = 64;
     // view_port->mutex = furi_mutex_alloc(FuriMutexTypeRecursive);
     return view_port;
 }

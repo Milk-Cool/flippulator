@@ -45,8 +45,8 @@ void* handle_gui(void* _view_port) {
             view_port->draw_callback(view_port->gui->canvas, view_port->draw_callback_context);
         clear();
         
-        for(uint8_t x = 0; x < view_port->gui->canvas->width; x++)
-            for(uint8_t y = 0; y < view_port->gui->canvas->height; y++) {
+        for(uint8_t x = 0; x < view_port->width; x++)
+            for(uint8_t y = 0; y < view_port->height; y++) {
                 move(y, x);
                 printw("%c", view_port->gui->canvas->fb[view_port->gui->canvas->offset_x + x][view_port->gui->canvas->offset_y + y] == 1 ? 'X' : ' ');
             }
