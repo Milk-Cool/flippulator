@@ -2,7 +2,7 @@
     "configurations": [
         {
             "name": "Default",
-            "intelliSenseMode": "clang-x64",
+            "intelliSenseMode": "gcc-x64",
             "includePath": ["${workspaceFolder}/flipper", "${workspaceFolder}/helpers"]
         }
     ],
