@@ -3,7 +3,11 @@
 #include <furi.h>
 
 Canvas* canvas_init() {
-    return (Canvas*) malloc(sizeof(Canvas));
+    Canvas* canvas = malloc(sizeof(Canvas));
+    canvas->offset_x = 0;
+    canvas->offset_y = 0;
+    canvas->width = 128;
+    canvas->height = 64;
 }
 
 void canvas_free(Canvas* canvas) {
@@ -55,16 +59,14 @@ void canvas_reset(Canvas* canvas) {
 
 void canvas_clear(Canvas* canvas) {
     furi_assert(canvas);
-    for(uint8_t x = 0; x < 256; x++)
-        for(uint8_t y = 0; y < 256; y++)
-            canvas->fb[x][y] = false;
+    memset(canvas->fb, 0, sizeof(canvas->fb[0][0]) * 256 * 256);
 }
 
 void canvas_draw_dot(Canvas* canvas, uint8_t x, uint8_t y) {
     furi_assert(canvas);
     x += canvas->offset_x;
     y += canvas->offset_y;
-    canvas->fb[x][y] = true;
+    canvas->fb[x][y] = 1;
 }
 
 // TODO: other drawing functions

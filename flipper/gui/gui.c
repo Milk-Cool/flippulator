@@ -2,7 +2,11 @@
 
 #include <pthread.h>
 #include <ncurses.h>
-#include <time.h>
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
 
 #include <stdio.h>
 
@@ -37,18 +41,22 @@ void* handle_input(void* _view_port) {
 void* handle_gui(void* _view_port) {
     ViewPort* view_port = _view_port;
     while(true) {
-        clock_t delay_start = clock();
         if(view_port->draw_callback != NULL)
             view_port->draw_callback(view_port->gui->canvas, view_port->draw_callback_context);
         clear();
         
-        for(uint8_t x = 0; x < view_port->gui->canvas->width; x++) {
-            for(uint8_t y = 0; y < view_port->gui->canvas->height; y++)
-                printw("%s", view_port->gui->canvas->fb[x][y] ? "⣿" : "⠀");
-            printw("%s", "\r\n");
-        }
+        for(uint8_t x = 0; x < view_port->gui->canvas->width; x++)
+            for(uint8_t y = 0; y < view_port->gui->canvas->height; y++) {
+                move(y, x);
+                printw("%c", view_port->gui->canvas->fb[view_port->gui->canvas->offset_x + x][view_port->gui->canvas->offset_y + y] == 1 ? 'X' : ' ');
+            }
         refresh();
-        while(clock() < delay_start + 1);
+        // ~60 FPS
+        #ifdef _WIN32
+            Sleep(16); // 16ms
+        #else
+            usleep(16666); // 16.666 ms
+        #endif
     }
     return NULL;   
 }

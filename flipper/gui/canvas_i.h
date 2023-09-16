@@ -3,12 +3,11 @@
 #include "canvas.h"
 #include <stddef.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 /** Canvas structure
  */
 struct Canvas {
-    bool fb[256][256];
+    uint8_t fb[256][256];
     CanvasOrientation orientation;
     uint8_t offset_x;
     uint8_t offset_y;
