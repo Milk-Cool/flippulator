@@ -24,10 +24,10 @@ void* handle_input(void* _view_port) {
         c = getch();
         InputEvent* event = malloc(sizeof(InputEvent));
         event->type = InputTypePress;
-        if(c == KEY_UP) event->key = InputKeyUp;
-        else if(c == KEY_DOWN) event->key = InputKeyDown;
-        else if(c == KEY_LEFT) event->key = InputKeyLeft;
-        else if(c == KEY_RIGHT) event->key = InputKeyRight;
+        if(c == 3) event->key = InputKeyUp;
+        else if(c == 2) event->key = InputKeyDown;
+        else if(c == 4) event->key = InputKeyLeft;
+        else if(c == 5) event->key = InputKeyRight;
         else if(c == 122) event->key = InputKeyOk;
         else if(c == 120) event->key = InputKeyBack;
         else if(c == 113) {
