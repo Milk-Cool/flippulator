@@ -1,12 +1,18 @@
 #include "gui_i.h"
 
 #include <pthread.h>
-#include <ncurses.h>
 #ifdef _WIN32
     #include <windows.h>
 #else
     #include <unistd.h>
 #endif
+#include <SDL2/SDL.h>
+
+static SDL_Renderer* renderer;
+static SDL_Window* window;
+static SDL_Rect rect;
+static SDL_Event event;
+static bool running = true;
 
 #include <stdio.h>
 
@@ -16,41 +22,60 @@ Gui* gui_alloc() {
     return gui;
 }
 
+void exit_sdl(uint8_t code) {
+    // FIXME: crashes when exiting
+    // SDL_DestroyRenderer(renderer);
+    // SDL_DestroyWindow(window);
+    // SDL_Quit();
+    exit(code);
+}
+
 // TODO: long presses and stuff
-void* handle_input(void* _view_port) {
+static void* handle_input(void* _view_port) {
     ViewPort* view_port = _view_port;
-    while(true) {
-        char c;
-        c = getch();
-        InputEvent* event = malloc(sizeof(InputEvent));
-        event->type = InputTypePress;
-        if(c == 3) event->key = InputKeyUp;
-        else if(c == 2) event->key = InputKeyDown;
-        else if(c == 4) event->key = InputKeyLeft;
-        else if(c == 5) event->key = InputKeyRight;
-        else if(c == 122) event->key = InputKeyOk;
-        else if(c == 120) event->key = InputKeyBack;
-        else if(c == 113) {
-            endwin();
-            exit(0);
+    while(running) {
+        while(SDL_PollEvent(&event)) {
+            if(event.type == SDL_QUIT) exit_sdl(0);
+            if(event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+                InputEvent* e = malloc(sizeof(InputEvent));
+                e->type = event.type == SDL_KEYDOWN ? InputTypePress : InputTypeRelease;
+                bool flag = true;
+                if(event.key.keysym.sym == SDLK_UP) e->key = InputKeyUp;
+                else if(event.key.keysym.sym == SDLK_DOWN) e->key = InputKeyDown;
+                else if(event.key.keysym.sym == SDLK_LEFT) e->key = InputKeyLeft;
+                else if(event.key.keysym.sym == SDLK_RIGHT) e->key = InputKeyRight;
+                else if(event.key.keysym.sym == SDLK_z) e->key = InputKeyOk;
+                else if(event.key.keysym.sym == SDLK_x) e->key = InputKeyBack;
+                else flag = false;
+                if(view_port->input_callback != NULL && flag)
+                    view_port->input_callback(e, view_port->input_callback_context);
+            }
         }
-        view_port->input_callback(event, view_port->input_callback_context);
     }
     return NULL;
 }
-void* handle_gui(void* _view_port) {
+static void* handle_gui(void* _view_port) {
     ViewPort* view_port = _view_port;
-    while(true) {
+    while(running) {
         if(view_port->draw_callback != NULL)
             view_port->draw_callback(view_port->gui->canvas, view_port->draw_callback_context);
-        clear();
+        
+        SDL_SetRenderDrawColor(renderer, 0xff, 0x82, 0x00, 0xff);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
         
         for(uint8_t x = 0; x < view_port->width; x++)
             for(uint8_t y = 0; y < view_port->height; y++) {
-                move(y, x);
-                printw("%c", view_port->gui->canvas->fb[view_port->gui->canvas->offset_x + x][view_port->gui->canvas->offset_y + y] == 1 ? 'X' : ' ');
+                if(view_port->gui->canvas->fb[view_port->gui->canvas->offset_x + x][view_port->gui->canvas->offset_y + y] != 1)
+                    continue;
+                rect.x = x * 5;
+                rect.y = y * 5;
+                rect.w = 5;
+                rect.h = 5;
+                SDL_RenderDrawRect(renderer, &rect);
+                SDL_RenderFillRect(renderer, &rect);
             }
-        refresh();
+        SDL_RenderPresent(renderer);
         // ~60 FPS
         #ifdef _WIN32
             Sleep(16); // 16ms
@@ -67,11 +92,11 @@ void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer) {
     gui->view_port = view_port;
     view_port->gui = gui;
 
-    initscr();
-    noecho();
-    cbreak();
-    keypad(stdscr, TRUE);
-    
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_CreateWindowAndRenderer(640, 320, 0, &window, &renderer);
+    SDL_SetWindowTitle(window, "Flippulator");
+
     pthread_t draw_thread_id;
     pthread_create(&draw_thread_id, NULL, handle_gui, view_port);
     pthread_t input_thread_id;

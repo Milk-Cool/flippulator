@@ -2,6 +2,8 @@
 An emulator for the Flipper Zero\
 Based on [Flipper Zero Firmware](https://github.com/flipperdevices/flipperzero-firmware)
 
+![Screenshot](https://raw.githubusercontent.com/Milk-Cool/flippulator/main/images/screenshot.png)
+
 ## Requirements
 A linux system\
 Packages `make`, `gcc`, `libncurses5`
@@ -12,11 +14,10 @@ Packages `make`, `gcc`, `libncurses5`
 ## Limitations
 - The main function cannot be called `main`
 - `furi.h` must be included
-- `furi.h` includes `ncurses.h`, which reserves some function names such as `clear` and `refresh`
-- Due to ncurses limitations, only the `InputTypePress` input type is supported.
+- Right now, only the `InputTypePress` and `InputTypeRelease` input types are supported.
 
 ## TODOs
-- [ ] Use GTK instead of ncurses
+- [x] Use ~~GTK~~ SDL instead of ncurses
 - [ ] Write support for FuriTypes (FuriString, FuriMutex, etc.)
 
 

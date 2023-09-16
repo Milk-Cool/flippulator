@@ -9,7 +9,8 @@
         "stdlib.h": "c",
         "record.h": "c",
         "crash.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "random": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

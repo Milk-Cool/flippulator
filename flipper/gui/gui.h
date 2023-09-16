@@ -26,6 +26,8 @@ typedef void (*GuiCanvasCommitCallback)(
 
 typedef struct Gui Gui;
 
+void exit_sdl(uint8_t code);
+
 void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer);
 void gui_remove_view_port(Gui* gui, ViewPort* view_port);
 Gui* gui_alloc();

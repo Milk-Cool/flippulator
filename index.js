@@ -36,8 +36,7 @@ const APP_COPY = "flippulator_app_copy";
 int main() {
     furi_init();
     ${manifest.entry_point}(NULL);
-    endwin();
-    return 0;
+    exit_sdl(0);
 }`);
     spawn("make", [], {
         "cwd": process.cwd(),

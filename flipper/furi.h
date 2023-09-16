@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdlib.h>
-#include <ncurses.h>
 
 #include "core/base.h"
 #include "core/message_queue.h"

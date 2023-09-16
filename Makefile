@@ -14,7 +14,7 @@ CC_PREFIX_FINAL = gcc -Wall -Wno-main
 all: $(OUT_APP)
 
 $(OUT_APP):# $(OUT_LIB)# 
-	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(HELPERS) $(SRC_APP) $(SOURCES) -lncurses -o $(OUT_APP)
+	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(HELPERS) $(SRC_APP) $(SOURCES) -lSDL2 -o $(OUT_APP)
 
 #$(OUT_LIB): $(OBJECTS)
 #	ar rcs $(OUT_LIB) $(OBJECTS)
