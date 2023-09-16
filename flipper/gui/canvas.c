@@ -8,6 +8,7 @@ Canvas* canvas_init() {
     canvas->offset_y = 0;
     canvas->width = 128;
     canvas->height = 64;
+    return canvas;
 }
 
 void canvas_free(Canvas* canvas) {
