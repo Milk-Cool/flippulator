@@ -64,17 +64,20 @@ static void* handle_gui(void* _view_port) {
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
         
-        for(uint8_t x = 0; x < view_port->width; x++)
-            for(uint8_t y = 0; y < view_port->height; y++) {
-                if(view_port->gui->canvas->fb[view_port->gui->canvas->offset_x + x][view_port->gui->canvas->offset_y + y] != 1)
-                    continue;
-                rect.x = x * 5;
-                rect.y = y * 5;
-                rect.w = 5;
-                rect.h = 5;
-                SDL_RenderDrawRect(renderer, &rect);
-                SDL_RenderFillRect(renderer, &rect);
-            }
+        for(uint8_t x = 0; x < view_port->width / 8; x++) // Tile X
+            for(uint8_t y = 0; y < view_port->height / 8; y++) // Tile Y
+                //if(canvas_get_buffer(view_port->gui->canvas)[view_port->gui->canvas->offset_x + x + (view_port->gui->canvas->offset_y + y) * view_port->width] != 1)
+                //    continue;
+                for(uint8_t i = 0; i < 8; i++) // Tile row
+                    for(uint8_t j = 0; j < 8; j++) { // Tile column
+                        if(!(canvas_get_buffer(view_port->gui->canvas)[x * 8 + y * view_port->width + i] & (1 << j))) continue;
+                        rect.x = (8 * x + i) * 5;
+                        rect.y = (8 * y + j) * 5;
+                        rect.w = 5;
+                        rect.h = 5;
+                        SDL_RenderDrawRect(renderer, &rect);
+                        SDL_RenderFillRect(renderer, &rect);
+                    }
         SDL_RenderPresent(renderer);
         // ~60 FPS
         #ifdef _WIN32

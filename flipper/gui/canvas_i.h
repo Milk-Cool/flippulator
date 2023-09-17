@@ -3,16 +3,19 @@
 #include "canvas.h"
 #include <stddef.h>
 #include <stdint.h>
+#include <u8g2.h>
+#include <toolbox/compress.h>
 
 /** Canvas structure
  */
 struct Canvas {
-    uint8_t fb[256][256];
+    u8g2_t fb;
     CanvasOrientation orientation;
     uint8_t offset_x;
     uint8_t offset_y;
     uint8_t width;
     uint8_t height;
+    CompressIcon* compress_icon;
 };
 
 /** Allocate memory and initialize canvas

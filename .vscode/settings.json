@@ -10,7 +10,10 @@
         "record.h": "c",
         "crash.h": "c",
         "unistd.h": "c",
-        "random": "c"
+        "random": "c",
+        "u8g2.h": "c",
+        "u8g2_glue.h": "c",
+        "u8x8.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

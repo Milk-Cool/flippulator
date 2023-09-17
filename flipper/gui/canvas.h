@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
+#include <u8g2.h>
 
 /** Color enumeration */
 typedef enum {
@@ -86,6 +88,39 @@ void canvas_frame_set(
     uint8_t height);
 uint8_t canvas_width(const Canvas* canvas);
 uint8_t canvas_height(const Canvas* canvas);
+uint8_t canvas_current_font_height(const Canvas* canvas);
+const CanvasFontParameters* canvas_get_font_params(const Canvas* canvas, Font font);
+void canvas_set_color(Canvas* canvas, Color color);
+void canvas_set_font_direction(Canvas* canvas, CanvasDirection dir);
+void canvas_invert_color(Canvas* canvas);
+void canvas_set_font(Canvas* canvas, Font font);
+void canvas_set_custom_u8g2_font(Canvas* canvas, const uint8_t* font);
+void canvas_draw_str(Canvas* canvas, uint8_t x, uint8_t y, const char* str);
+void canvas_draw_str_aligned(
+    Canvas* canvas,
+    uint8_t x,
+    uint8_t y,
+    Align horizontal,
+    Align vertical,
+    const char* str);
+uint16_t canvas_string_width(Canvas* canvas, const char* str);
+uint8_t canvas_glyph_width(Canvas* canvas, char symbol);
+void canvas_draw_bitmap(
+    Canvas* canvas,
+    uint8_t x,
+    uint8_t y,
+    uint8_t width,
+    uint8_t height,
+    const uint8_t* compressed_bitmap_data);
+void canvas_draw_u8g2_bitmap(
+    u8g2_t* u8g2,
+    u8g2_uint_t x,
+    u8g2_uint_t y,
+    u8g2_uint_t w,
+    u8g2_uint_t h,
+    const uint8_t* bitmap,
+    IconRotation rotation);
+
 void canvas_reset(Canvas* canvas);
 void canvas_clear(Canvas* canvas);
 void canvas_draw_dot(Canvas* canvas, uint8_t x, uint8_t y);

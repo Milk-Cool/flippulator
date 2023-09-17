@@ -3,7 +3,8 @@
         {
             "name": "Default",
             "intelliSenseMode": "gcc-x64",
-            "includePath": ["${workspaceFolder}/flipper", "${workspaceFolder}/helpers"]
+            "includePath": ["${workspaceFolder}/flipper", "${workspaceFolder}/helpers",
+            "${workspaceFolder}/lib"]
         }
     ],
     "version": 4
