@@ -16,6 +16,9 @@ Packages `make`, `gcc`, `libncurses5`
 - `furi.h` must be included
 - Right now, only the `InputTypePress` and `InputTypeRelease` input types are supported.
 
+## Known issues
+- Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
+
 ## TODOs
 - [x] Use ~~GTK~~ SDL instead of ncurses
 - [ ] Write support for FuriTypes (FuriString, FuriMutex, etc.)
