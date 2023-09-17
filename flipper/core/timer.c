@@ -35,9 +35,9 @@ static void* handler(void* ctx) {
 
 FuriStatus furi_timer_start(FuriTimer* instance, uint32_t ticks) {
     instance->delay = ticks;
+    instance->running = 1;
     pthread_t thread_id;
     pthread_create(&thread_id, NULL, handler, instance);
-    instance->running = 1;
     return FuriStatusOk;
 }
 
