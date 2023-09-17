@@ -23,12 +23,12 @@ void furi_timer_free(FuriTimer* instance) {
 static void* handler(void* ctx) {
     FuriTimer* timer = ctx;
     do {
-        timer->cb(timer->ctx);
         #ifdef _WIN32
             Sleep(timer->delay);
         #else
             usleep(timer->delay * 1000);
         #endif
+        timer->cb(timer->ctx);
     } while(timer->type == FuriTimerTypePeriodic && timer->running);
     return NULL;
 }
