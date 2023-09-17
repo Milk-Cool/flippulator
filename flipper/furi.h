@@ -6,6 +6,8 @@
 #include "core/message_queue.h"
 #include "core/core_defines.h"
 #include "core/record.h"
+#include "core/timer.h"
+#include "core/kernel.h"
 #include <crash.h>
 
 // Services

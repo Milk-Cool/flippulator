@@ -140,7 +140,7 @@ helpers/**/*.o
 test.sh
 
 # Test application
-test_app/
+test_app*/
 
 # Test code
 test.c
