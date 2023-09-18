@@ -15,7 +15,9 @@
         "u8g2_glue.h": "c",
         "u8x8.h": "c",
         "icon.h": "c",
-        "timer.h": "c"
+        "timer.h": "c",
+        "sdl.h": "c",
+        "sdl_ttf.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

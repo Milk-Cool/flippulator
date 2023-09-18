@@ -7,11 +7,18 @@
     #include <unistd.h>
 #endif
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
+#define FLIPPULATOR_FONT_SIZE 16
+
+extern bool global_vibro_on;
 
 static SDL_Renderer* renderer;
 static SDL_Window* window;
 static SDL_Rect rect;
 static SDL_Event event;
+static TTF_Font* HaxrCorp4089;
+static SDL_Color Black = { 0x00, 0x00, 0x00 };
 static bool running = true;
 
 #include <stdio.h>
@@ -54,6 +61,29 @@ static void* handle_input(void* _view_port) {
     }
     return NULL;
 }
+
+static void renderMessage(
+    char* msg,
+    int x,
+    int y,
+    int width
+) {
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(HaxrCorp4089, msg, Black);
+    SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    SDL_Rect message_rect = { x, y, NULL, NULL };
+
+    TTF_SizeText(HaxrCorp4089, msg, &message_rect.w, &message_rect.h);
+
+    message_rect.w *= 2;
+    message_rect.h *= 2;
+
+    SDL_RenderCopy(renderer, message, NULL, &message_rect);
+
+    SDL_FreeSurface(surfaceMessage);
+    SDL_DestroyTexture(message);
+}
+
+// TODO: multiple viewports support
 static void* handle_gui(void* _view_port) {
     ViewPort* view_port = _view_port;
     while(running) {
@@ -64,6 +94,17 @@ static void* handle_gui(void* _view_port) {
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
         
+        rect.x = 0;
+        rect.y = 320;
+        rect.w = 640;
+        rect.h = 3;
+        SDL_RenderDrawRect(renderer, &rect);
+        SDL_RenderFillRect(renderer, &rect);
+
+        char* msg_vibro = malloc(sizeof(char) * 12);
+        snprintf(msg_vibro, 12, "Vibro: %s", global_vibro_on ? "On" : "Off");
+        renderMessage(msg_vibro, 20, 340, 100);
+
         for(uint8_t x = 0; x < view_port->width / 8; x++) // Tile X
             for(uint8_t y = 0; y < view_port->height / 8; y++) // Tile Y
                 //if(canvas_get_buffer(view_port->gui->canvas)[view_port->gui->canvas->offset_x + x + (view_port->gui->canvas->offset_y + y) * view_port->width] != 1)
@@ -90,14 +131,18 @@ static void* handle_gui(void* _view_port) {
 }
 void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer) {
     UNUSED(layer);
-    furi_assert(gui); // <--
+    furi_assert(gui);
     furi_assert(view_port);
     gui->view_port = view_port;
     view_port->gui = gui;
 
+    TTF_Init();
+
+    HaxrCorp4089 = TTF_OpenFont("haxrcorp-4089.ttf", FLIPPULATOR_FONT_SIZE);
+
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer(640, 320, 0, &window, &renderer);
+    SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer);
     SDL_SetWindowTitle(window, "Flippulator");
 
     pthread_t draw_thread_id;

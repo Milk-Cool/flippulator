@@ -1,9 +1,10 @@
 LIBS = flipper/
+LIBS_HAL = flipper_hal/
 EXT_LIB_ALL = lib/
 #EXT_LIB_u8g2 = lib/u8g2/
 HELPERS = helpers/
 APP = flippulator_app_copy/
-SOURCES = $(shell find $(LIBS) -name "*.c") $(shell find $(HELPERS) -name "*.c") $(shell find $(EXT_LIB_ALL) -name "*.c")
+SOURCES = $(shell find $(LIBS) -name "*.c") $(shell find $(LIBS_HAL) -name "*.c") $(shell find $(HELPERS) -name "*.c") $(shell find $(EXT_LIB_ALL) -name "*.c")
 SRC_APP = $(shell find $(APP) -name "*.c")
 #OBJECTS = ${subst .c,.o,$(SOURCES)}
 OUT_APP = out
@@ -18,7 +19,7 @@ BUILD_LIB_heatshrink = $(BUILD_LIB_heatshrink_PATH)libheatshrink_static.a $(BUIL
 all: $(OUT_APP)
 
 $(OUT_APP): $(BUILD_LIB_heatshrink)
-	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -o $(OUT_APP)
+	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -o $(OUT_APP)
 
 $(BUILD_LIB_heatshrink):
 	make -C lib/heatshrink libraries

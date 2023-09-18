@@ -26,3 +26,6 @@ Packages `make`, `gcc`, `libncurses5`
 
 ### Uhm, akstually, it is not an emulator 🤓☝️...
 Yes, it is not. It just compiles flipper applications for your computer.
+
+## Credits and copyrights
+The FontStruction “HaxrCorp 4089” (https://fontstruct.com/fontstructions/show/192981) by “sahwar” is licensed under a Creative Commons Attribution Share Alike license (http://creativecommons.org/licenses/by-sa/3.0/).

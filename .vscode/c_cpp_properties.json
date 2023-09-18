@@ -4,7 +4,7 @@
             "name": "Default",
             "intelliSenseMode": "gcc-x64",
             "includePath": ["${workspaceFolder}/flipper", "${workspaceFolder}/helpers",
-            "${workspaceFolder}/lib"]
+            "${workspaceFolder}/lib", "${workspaceFolder}/flipper_hal"]
         }
     ],
     "version": 4
