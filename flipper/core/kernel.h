@@ -9,4 +9,5 @@
 
 
 void furi_delay_ms(uint32_t time);
+void furi_delay_tick(uint32_t time);
 void furi_delay_us(uint32_t time);

@@ -17,7 +17,8 @@
         "icon.h": "c",
         "timer.h": "c",
         "sdl.h": "c",
-        "sdl_ttf.h": "c"
+        "sdl_ttf.h": "c",
+        "stdbool.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
