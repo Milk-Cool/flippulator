@@ -70,7 +70,7 @@ static void renderMessage(
 ) {
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(HaxrCorp4089, msg, Black);
     SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-    SDL_Rect message_rect = { x, y, NULL, NULL };
+    SDL_Rect message_rect = { x, y, 0, 0 };
 
     TTF_SizeText(HaxrCorp4089, msg, &message_rect.w, &message_rect.h);
 
