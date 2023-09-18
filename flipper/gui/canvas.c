@@ -204,28 +204,28 @@ void canvas_draw_bitmap(
 
 // TODO: animation
 
-// void canvas_draw_icon_animation(
-//     Canvas* canvas,
-//     uint8_t x,
-//     uint8_t y,
-//     IconAnimation* icon_animation) {
-//     furi_assert(canvas);
-//     furi_assert(icon_animation);
+void canvas_draw_icon_animation(
+    Canvas* canvas,
+    uint8_t x,
+    uint8_t y,
+    IconAnimation* icon_animation) {
+    furi_assert(canvas);
+    furi_assert(icon_animation);
 
-//     x += canvas->offset_x;
-//     y += canvas->offset_y;
-//     uint8_t* icon_data = NULL;
-//     compress_icon_decode(
-//         canvas->compress_icon, icon_animation_get_data(icon_animation), &icon_data);
-//     canvas_draw_u8g2_bitmap(
-//         &canvas->fb,
-//         x,
-//         y,
-//         icon_animation_get_width(icon_animation),
-//         icon_animation_get_height(icon_animation),
-//         icon_data,
-//         IconRotation0);
-// }
+    x += canvas->offset_x;
+    y += canvas->offset_y;
+    uint8_t* icon_data = NULL;
+    compress_icon_decode(
+        canvas->compress_icon, icon_animation_get_data(icon_animation), &icon_data);
+    canvas_draw_u8g2_bitmap(
+        &canvas->fb,
+        x,
+        y,
+        icon_animation_get_width(icon_animation),
+        icon_animation_get_height(icon_animation),
+        icon_data,
+        IconRotation0);
+}
 
 static void canvas_draw_u8g2_bitmap_int(
     u8g2_t* u8g2,
