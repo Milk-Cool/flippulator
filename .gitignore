@@ -147,7 +147,7 @@ test.c
 
 # Output files
 app.o
-out
+out/
 libflipper.a
 
 # App copy
