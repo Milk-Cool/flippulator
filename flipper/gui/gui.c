@@ -12,6 +12,7 @@
 #define FLIPPULATOR_FONT_SIZE 16
 
 extern bool global_vibro_on;
+extern int16_t global_sound_current;
 
 static SDL_Renderer* renderer;
 static SDL_Window* window;
@@ -19,6 +20,8 @@ static SDL_Rect rect;
 static SDL_Event event;
 static TTF_Font* HaxrCorp4089;
 static SDL_Color Black = { 0x00, 0x00, 0x00 };
+static SDL_AudioDeviceID audio_device;
+static SDL_AudioSpec audio_spec;
 static bool running = true;
 
 #include <stdio.h>
@@ -35,6 +38,15 @@ void exit_sdl(uint8_t code) {
     // SDL_DestroyWindow(window);
     // SDL_Quit();
     exit(code);
+}
+
+static void* handle_sound(void* ctx) {
+    UNUSED(ctx);
+    while(true) {
+        SDL_QueueAudio(audio_device, &global_sound_current, sizeof(int16_t));
+        SDL_Delay((1.0 / audio_spec.freq) * 1000);
+    }
+    return NULL;
 }
 
 // TODO: long presses and stuff
@@ -142,8 +154,24 @@ void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer) {
 
     SDL_SetHint(SDL_HINT_RENDER_DRIVER, "software");
     SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_AUDIO);
     SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer);
     SDL_SetWindowTitle(window, "Flippulator");
+
+    SDL_zero(audio_spec);
+    audio_spec.freq = 44100;
+    audio_spec.format = AUDIO_S16SYS;
+    audio_spec.channels = 1;
+    audio_spec.samples = 1024;
+    audio_spec.callback = NULL;
+
+    audio_device = SDL_OpenAudioDevice(
+        NULL, 0, &audio_spec, NULL, 0);
+    
+    pthread_t sound_thread_id;
+    pthread_create(&sound_thread_id, NULL, handle_sound, NULL);
+
+    SDL_PauseAudioDevice(audio_device, 0);
 
     pthread_t draw_thread_id;
     pthread_create(&draw_thread_id, NULL, handle_gui, view_port);

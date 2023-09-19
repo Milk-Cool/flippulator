@@ -16,7 +16,7 @@ OUT_ALL = $(OUT_APP) $(OUT_FONT)
 #OUT_LIB_NAME = flipper
 #OUT_LIB = lib$(OUT_LIB_NAME).a
 #CC_PREFIX = gcc -c -Wall# -fPIC
-CC_PREFIX_FINAL = gcc -Wall -Wno-main
+CC_PREFIX_FINAL = gcc -O2 -Wall -Wno-main
 BUILD_LIB_heatshrink_PATH = lib/heatshrink/
 BUILD_LIB_heatshrink = $(BUILD_LIB_heatshrink_PATH)libheatshrink_static.a $(BUILD_LIB_heatshrink_PATH)libheatshrink_dynamic.a
 #CC_PREFIX = clang -c
@@ -31,7 +31,7 @@ $(OUT_ALL): $(OUT_APP) $(SRC_FONT)
 
 $(OUT_APP): $(BUILD_LIB_heatshrink)
 	mkdir $(OUT_DIR)
-	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -o $(OUT_APP)
+	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -lm -o $(OUT_APP)
 
 $(BUILD_LIB_heatshrink):
 	make -C lib/heatshrink libraries

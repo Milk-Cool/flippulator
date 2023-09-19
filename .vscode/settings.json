@@ -18,7 +18,9 @@
         "timer.h": "c",
         "sdl.h": "c",
         "sdl_ttf.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "math.h": "c",
+        "pthread.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
