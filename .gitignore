@@ -148,6 +148,7 @@ test.c
 # Output files
 app.o
 out/
+out_*/
 libflipper.a
 
 # App copy

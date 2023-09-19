@@ -7,8 +7,9 @@ APP = flippulator_app_copy/
 SOURCES = $(shell find $(LIBS) -name "*.c") $(shell find $(LIBS_HAL) -name "*.c") $(shell find $(HELPERS) -name "*.c") $(shell find $(EXT_LIB_ALL) -name "*.c")
 SRC_APP = $(shell find $(APP) -name "*.c")
 #OBJECTS = ${subst .c,.o,$(SOURCES)}
-OUT_DIR = out/
-OUT_APP = $(OUT_DIR)out
+OUT_DIR = $(shell cat /tmp/flippulator_temp_out_app_dir)
+OUT_APP_NAME = $(shell cat /tmp/flippulator_temp_out_app_name)
+OUT_APP = $(OUT_DIR)$(OUT_APP_NAME)
 SRC_FONT = haxrcorp-4089.ttf
 OUT_FONT = $(OUT_DIR)haxrcorp-4089.ttf
 OUT_CR = $(OUT_DIR)copyright.txt
@@ -29,12 +30,12 @@ $(OUT_ALL): $(OUT_APP) $(SRC_FONT)
 	cp $(SRC_FONT) $(OUT_FONT)
 	echo $(CR_TEXT) > $(OUT_CR)
 
-$(OUT_APP): $(BUILD_LIB_heatshrink)
+$(OUT_APP):
 	mkdir $(OUT_DIR)
 	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -lm -o $(OUT_APP)
 
-$(BUILD_LIB_heatshrink):
-	make -C lib/heatshrink libraries
+#$(BUILD_LIB_heatshrink):
+#	make -C lib/heatshrink libraries
 
 #$(OUT_LIB): $(OBJECTS)
 #	ar rcs $(OUT_LIB) $(OBJECTS)

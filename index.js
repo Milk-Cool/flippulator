@@ -6,6 +6,7 @@ const { spawn } = require("node:child_process");
 const readline = require("readline");
 const fs = require("fs");
 const { join } = require("path");
+const { tmpdir } = require("os");
 
 const rl = readline.createInterface({
     "input": process.stdin,
@@ -38,6 +39,9 @@ int main() {
     ${manifest.entry_point}(NULL);
     exit_sdl(0);
 }`);
+    fs.writeFileSync(join(tmpdir(), "flippulator_temp_out_app_dir"), "out_" + manifest.appid + "/");
+    fs.writeFileSync(join(tmpdir(), "flippulator_temp_out_app_name"), manifest.appid);
+    
     spawn("make", [], {
         "cwd": process.cwd(),
         "detached": false,
