@@ -16,14 +16,15 @@ pthread_t sine_thread_id;
 static void* sine_cb(void* ctx) {
     UNUSED(ctx);
     float frequency = freq_g;
+    int16_t vol_l = (vol_g / 60) * 32767;
     uint64_t time = 0;
     while(true) {
-        global_sound_current = 100 * vol_g * sin((2 * M_PI * frequency * time + 0) / 44100);
-        // printf("%f %f %f %hu\r\n", frequency, sin(2 * M_PI * frequency * time + 0), 100 * vol_g * sin(2 * M_PI * frequency * time + 0), global_sound_current);
+        global_sound_current = vol_l * sin(time / (44100 / frequency));
+        // printf("%f %f %f %hu\r\n", frequency, sin(2 * M_PI * frequency * time + 0), vol_l * sin(2 * M_PI * frequency * time + 0), global_sound_current);
         #ifdef _WIN32
             Sleep(1); // Windows can't sleep for less than a millisecond. What a shame!
         #else
-            usleep(1.0 / 44100); // 16.666 ms // IFNOTWORK freq = frequency
+            usleep(1.0 / 44100); // IFNOTWORK freq = frequency
         #endif
         time++;
     }
@@ -54,7 +55,6 @@ bool furi_hal_speaker_is_mine() {
 void furi_hal_speaker_start(float frequency, float volume) {
     vol_g = volume;
     freq_g = frequency;
-    float freq_copy = frequency; // So that it does not disapper after the call
     pthread_create(&sine_thread_id, NULL, sine_cb, NULL);
 }
 
