@@ -19,6 +19,13 @@ Packages `make`, `gcc`, `libncurses5`
 ## Known issues
 - Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
 
+## What's supported so far:
+- Canvas and viewports (no elements yet though...)
+- Input (partially)
+- Some core functions
+- Records
+- Vibration
+
 ## TODOs
 - [x] Use ~~GTK~~ SDL instead of ncurses
 - [ ] Write support for FuriTypes (FuriString, FuriMutex, etc.)

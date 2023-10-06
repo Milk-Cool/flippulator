@@ -12,6 +12,7 @@
 
 // Services
 #include "gui/gui_srv.h"
+#include "notification/notification_app.h"
 
 #define furi_assert( ... ) \
     if(!(__VA_ARGS__)) \

@@ -8,4 +8,5 @@
 #define CRASH_CHECK_FAILED 2
 #define CRASH_UNKNOWN 3
 
+void crash_print(const char* msg);
 void crash(uint8_t code, const char* msg);

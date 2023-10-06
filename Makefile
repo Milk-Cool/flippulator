@@ -26,7 +26,7 @@ CR_TEXT = \
 
 all: $(OUT_ALL)
 
-$(OUT_ALL): $(OUT_APP) $(SRC_FONT)
+$(OUT_DIR): $(OUT_APP) $(SRC_FONT)
 	cp $(SRC_FONT) $(OUT_FONT)
 	echo $(CR_TEXT) > $(OUT_CR)
 

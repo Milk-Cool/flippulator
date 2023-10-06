@@ -8,8 +8,9 @@
 
 extern int16_t global_sound_current;
 
-float vol_g = 0;
-float freq_g = 0;
+static float vol_g = 0;
+static float freq_g = 0;
+static bool thread_running = false;
 
 pthread_t sine_thread_id;
 
@@ -55,6 +56,7 @@ bool furi_hal_speaker_is_mine() {
 void furi_hal_speaker_start(float frequency, float volume) {
     vol_g = volume;
     freq_g = frequency;
+    thread_running = true;
     pthread_create(&sine_thread_id, NULL, sine_cb, NULL);
 }
 
@@ -64,5 +66,8 @@ void furi_hal_speaker_set_volume(float volume) {
 }
 
 void furi_hal_speaker_stop() {
-    pthread_cancel(sine_thread_id);
+    if(thread_running)
+        pthread_cancel(sine_thread_id);
+    thread_running = false;
+    global_sound_current = 0;
 }

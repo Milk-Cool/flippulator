@@ -14,6 +14,7 @@
 extern bool global_vibro_on;
 extern int16_t global_sound_current;
 extern uint8_t global_led[3];
+extern uint8_t global_backlight_brightness;
 
 static SDL_Renderer* renderer;
 static SDL_Window* window;
@@ -120,6 +121,9 @@ static void* handle_gui(void* _view_port) {
         char* msg_led = malloc(sizeof(char) * 13);
         snprintf(msg_led, 13, "LED: #%02x%02x%02x", global_led[0], global_led[1], global_led[2]);
         renderMessage(msg_led, 20, 380, 100);
+        char* msg_bl = malloc(sizeof(char) * 16);
+        snprintf(msg_bl, 16, "Backlight: 0x%02x", global_backlight_brightness);
+        renderMessage(msg_bl, 20, 420, 100);
 
         for(uint8_t x = 0; x < view_port->width / 8; x++) // Tile X
             for(uint8_t y = 0; y < view_port->height / 8; y++) // Tile Y

@@ -1,2 +1,2 @@
-#include <stdbool.h>
-bool global_backlight_on;
+#include <stdint.h>
+uint8_t global_backlight_brightness;

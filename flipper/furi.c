@@ -14,4 +14,5 @@ void furi_init() {
         furi_record_init();
     }
     gui_srv(NULL);
+    notification_srv_init();
 }
