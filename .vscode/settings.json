@@ -27,7 +27,8 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "notification_app.h": "c"
+        "notification_app.h": "c",
+        "furi_hal_speaker.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

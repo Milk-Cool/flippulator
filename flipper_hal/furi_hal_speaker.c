@@ -16,17 +16,17 @@ pthread_t sine_thread_id;
 
 static void* sine_cb(void* ctx) {
     UNUSED(ctx);
-    float frequency = freq_g;
-    int16_t vol_l = (vol_g / 60) * 32767;
+    int16_t vol_l = (vol_g / 60.0) * 32767;
     uint64_t time = 0;
     while(true) {
-        global_sound_current = vol_l * sin(time / (44100 / frequency));
-        // printf("%f %f %f %hu\r\n", frequency, sin(2 * M_PI * frequency * time + 0), vol_l * sin(2 * M_PI * frequency * time + 0), global_sound_current);
-        #ifdef _WIN32
-            Sleep(1); // Windows can't sleep for less than a millisecond. What a shame!
-        #else
-            usleep(1.0 / 44100); // IFNOTWORK freq = frequency
-        #endif
+        global_sound_current = vol_l * sin(time * freq_g * M_PI * 2 / AUDIO_FREQUENCY);
+        // printf("%f %f %f %hu\r\n", freq_g, sin(2 * M_PI * freq_g * time + 0), vol_l * sin(2 * M_PI * freq_g * time + 0), global_sound_current);
+        // #ifdef _WIN32
+        //     Sleep(1); // Windows can't sleep for less than a millisecond. What a shame!
+        // #else
+        //     usleep((1.0 / AUDIO_FREQUENCY) * 1000000); // IFNOTWORK freq = freq_g
+        // #endif
+        SDL_Delay((1.0 / AUDIO_FREQUENCY) * 1000);
         time++;
     }
     return NULL;
