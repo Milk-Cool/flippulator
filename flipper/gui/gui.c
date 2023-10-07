@@ -8,11 +8,18 @@
 #endif
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <math.h>
+#include <flippulator_defines.h>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #define FLIPPULATOR_FONT_SIZE 16
 
 extern bool global_vibro_on;
 extern int16_t global_sound_current;
+extern float global_sound_freq;
+extern float global_sound_volume;
 extern uint8_t global_led[3];
 extern uint8_t global_backlight_brightness;
 
@@ -25,6 +32,7 @@ static SDL_Color Black = { 0x00, 0x00, 0x00 };
 static SDL_AudioDeviceID audio_device;
 static SDL_AudioSpec audio_spec;
 static bool running = true;
+static float s_time = 0;
 
 #include <stdio.h>
 
@@ -49,6 +57,23 @@ static void* handle_sound(void* ctx) {
         SDL_Delay((1.0 / audio_spec.freq) * 1000);
     }
     return NULL;
+}
+
+static void sound_cb(void* ctx, uint8_t* stream, int len) {
+    UNUSED(ctx);
+    uint16_t* snd = (uint16_t*)stream;
+    len /= sizeof(*snd);
+    for(int i = 0; i < len; i++) {
+        if(global_sound_freq == 0) {
+            snd[i] = 0;
+            continue;
+        }
+        snd[i] = (global_sound_volume / 60.0) * 32767 * sin(s_time);
+
+        s_time += global_sound_freq * M_PI * 2 / AUDIO_FREQUENCY;
+        if(s_time >= M_PI * 2)
+            s_time -= M_PI * 2;
+    }
 }
 
 // TODO: long presses and stuff
@@ -171,7 +196,7 @@ void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer) {
     audio_spec.format = AUDIO_S16SYS;
     audio_spec.channels = 1;
     audio_spec.samples = 1024;
-    audio_spec.callback = NULL;
+    audio_spec.callback = sound_cb;
 
     audio_device = SDL_OpenAudioDevice(
         NULL, 0, &audio_spec, NULL, 0);

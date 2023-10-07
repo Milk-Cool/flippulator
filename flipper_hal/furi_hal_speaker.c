@@ -7,6 +7,8 @@
 #endif
 
 extern int16_t global_sound_current;
+extern float global_sound_freq;
+extern float global_sound_volume;
 
 static float vol_g = 0;
 static float freq_g = 0;
@@ -16,7 +18,7 @@ pthread_t sine_thread_id;
 
 static void* sine_cb(void* ctx) {
     UNUSED(ctx);
-    int16_t vol_l = (vol_g / 60.0) * 32767;
+    /*int16_t vol_l = (vol_g / 60.0) * 32767;
     uint64_t time = 0;
     while(true) {
         global_sound_current = vol_l * sin(time * freq_g * M_PI * 2 / AUDIO_FREQUENCY);
@@ -28,7 +30,10 @@ static void* sine_cb(void* ctx) {
         // #endif
         SDL_Delay((1.0 / AUDIO_FREQUENCY) * 1000);
         time++;
-    }
+    }*/
+    global_sound_freq = freq_g;
+    global_sound_volume = vol_g;
+
     return NULL;
 }
 
