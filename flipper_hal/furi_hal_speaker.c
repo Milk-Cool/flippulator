@@ -74,5 +74,5 @@ void furi_hal_speaker_stop() {
     if(thread_running)
         pthread_cancel(sine_thread_id);
     thread_running = false;
-    global_sound_current = 0;
+    global_sound_freq = 0;
 }
