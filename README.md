@@ -30,6 +30,7 @@ Packages `make`, `gcc`, `libncurses5`
 ## TODOs
 - [x] Use ~~GTK~~ SDL instead of ncurses
 - [ ] Write support for FuriTypes (FuriString, FuriMutex, etc.)
+- [ ] Add settings to the notification service
 
 
 ### Uhm, akstually, it is not an emulator 🤓☝️...
