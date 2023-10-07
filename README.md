@@ -14,7 +14,8 @@ Packages `make`, `gcc`, `libncurses5`
 ## Limitations
 - The main function cannot be called `main`
 - `furi.h` must be included
-- Right now, only the `InputTypePress` and `InputTypeRelease` input types are supported.
+- Right now, only the `InputTypePress` and `InputTypeRelease` input types are supported
+- A variable cannot be named `time`
 
 ## Known issues
 - Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
