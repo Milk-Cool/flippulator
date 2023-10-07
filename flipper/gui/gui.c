@@ -17,7 +17,6 @@
 #define FLIPPULATOR_FONT_SIZE 16
 
 extern bool global_vibro_on;
-extern int16_t global_sound_current;
 extern float global_sound_freq;
 extern float global_sound_volume;
 extern uint8_t global_led[3];
@@ -48,15 +47,6 @@ void exit_sdl(uint8_t code) {
     // SDL_DestroyWindow(window);
     // SDL_Quit();
     exit(code);
-}
-
-static void* handle_sound(void* ctx) {
-    UNUSED(ctx);
-    while(true) {
-        SDL_QueueAudio(audio_device, &global_sound_current, sizeof(int16_t));
-        SDL_Delay((1.0 / audio_spec.freq) * 1000);
-    }
-    return NULL;
 }
 
 static void sound_cb(void* ctx, uint8_t* stream, int len) {
@@ -200,9 +190,6 @@ void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer) {
 
     audio_device = SDL_OpenAudioDevice(
         NULL, 0, &audio_spec, NULL, 0);
-    
-    pthread_t sound_thread_id;
-    pthread_create(&sound_thread_id, NULL, handle_sound, NULL);
 
     SDL_PauseAudioDevice(audio_device, 0);
 

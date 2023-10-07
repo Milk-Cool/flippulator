@@ -6,7 +6,6 @@
     #include <unistd.h>
 #endif
 
-extern int16_t global_sound_current;
 extern float global_sound_freq;
 extern float global_sound_volume;
 
