@@ -8,6 +8,7 @@
 #include "core/record.h"
 #include "core/timer.h"
 #include "core/kernel.h"
+#include "core/string.h"
 #include <crash.h>
 
 // Services
