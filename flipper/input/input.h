@@ -3,6 +3,9 @@
 
 // #pragma message "Input"
 
+#define INPUT_PRESS_TICKS 150
+#define INPUT_LONG_PRESS_COUNTS 2
+
 typedef enum {
     InputKeyUp,
     InputKeyDown,

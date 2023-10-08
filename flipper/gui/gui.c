@@ -66,7 +66,50 @@ static void sound_cb(void* ctx, uint8_t* stream, int len) {
     }
 }
 
-// TODO: long presses and stuff
+// 6 buttons
+
+// 0 Up
+// 1 Down
+// 2 Right
+// 3 Left
+// 4 OK
+// 5 Back
+
+#define BUTTONS_COUNT 6
+// Not a define because it's only used
+// in this file
+
+static bool held_down[BUTTONS_COUNT];
+static uint64_t held_time[BUTTONS_COUNT];
+static InputKey key_map[] = {
+    InputKeyUp, InputKeyDown, InputKeyRight,
+    InputKeyLeft, InputKeyOk, InputKeyBack
+};
+
+static void* input_loop(void* _view_port) {
+    ViewPort* view_port = _view_port;
+    while(running) {
+        for(uint8_t i = 0; i < BUTTONS_COUNT; i++) {
+            if(!held_down[i]) continue;
+            if(held_time[i] % INPUT_PRESS_TICKS == 0) {
+                InputEvent* e = malloc(sizeof(InputEvent));
+                e->key = key_map[i];
+                uint32_t presses = held_time[i] / INPUT_PRESS_TICKS;
+                if(presses < INPUT_LONG_PRESS_COUNTS && presses > 0)
+                    e->type = InputTypeShort;
+                else if(presses == INPUT_LONG_PRESS_COUNTS)
+                    e->type = InputTypeLong;
+                else if(presses != 0)
+                    e->type = InputTypeRepeat;
+                view_port->input_callback(e, view_port->input_callback_context);
+            }
+            held_time[i]++;
+        }
+        furi_delay_tick(1);
+    }
+    return NULL;
+}
+
 static void* handle_input(void* _view_port) {
     ViewPort* view_port = _view_port;
     while(running) {
@@ -76,15 +119,23 @@ static void* handle_input(void* _view_port) {
                 InputEvent* e = malloc(sizeof(InputEvent));
                 e->type = event.type == SDL_KEYDOWN ? InputTypePress : InputTypeRelease;
                 bool flag = true;
-                if(event.key.keysym.sym == SDLK_UP) e->key = InputKeyUp;
-                else if(event.key.keysym.sym == SDLK_DOWN) e->key = InputKeyDown;
-                else if(event.key.keysym.sym == SDLK_LEFT) e->key = InputKeyLeft;
-                else if(event.key.keysym.sym == SDLK_RIGHT) e->key = InputKeyRight;
-                else if(event.key.keysym.sym == SDLK_z) e->key = InputKeyOk;
-                else if(event.key.keysym.sym == SDLK_x) e->key = InputKeyBack;
+                uint8_t key;
+                if(event.key.keysym.sym == SDLK_UP) key = 0;
+                else if(event.key.keysym.sym == SDLK_DOWN) key = 1;
+                else if(event.key.keysym.sym == SDLK_LEFT) key = 3;
+                else if(event.key.keysym.sym == SDLK_RIGHT) key = 2;
+                else if(event.key.keysym.sym == SDLK_z) key = 4;
+                else if(event.key.keysym.sym == SDLK_x) key = 5;
                 else flag = false;
-                if(view_port->input_callback != NULL && flag)
-                    view_port->input_callback(e, view_port->input_callback_context);
+                if(!held_down[key] || event.type == SDL_KEYUP) {
+                    if(flag) {
+                        held_time[key] = 0;
+                        held_down[key] = event.type == SDL_KEYDOWN;
+                        e->key = key_map[key];
+                    }
+                    if(view_port->input_callback != NULL && flag)
+                        view_port->input_callback(e, view_port->input_callback_context);
+                }
             }
         }
     }
@@ -197,6 +248,8 @@ void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer) {
     pthread_create(&draw_thread_id, NULL, handle_gui, view_port);
     pthread_t input_thread_id;
     pthread_create(&input_thread_id, NULL, handle_input, view_port);
+    pthread_t input_loop_id;
+    pthread_create(&input_loop_id, NULL, input_loop, view_port);
 }
 void gui_remove_view_port(Gui* gui, ViewPort* view_port) {
     // TODO
