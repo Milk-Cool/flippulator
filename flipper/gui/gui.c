@@ -49,20 +49,31 @@ void exit_sdl(uint8_t code) {
     exit(code);
 }
 
+static float sine(uint16_t* snd) {
+    float to_ret = sin(s_time);
+
+    s_time += global_sound_freq * M_PI * 2 / AUDIO_FREQUENCY;
+    if(s_time >= M_PI * 2)
+        s_time -= M_PI * 2;
+    
+    return to_ret;
+}
+
 static void sound_cb(void* ctx, uint8_t* stream, int len) {
     UNUSED(ctx);
     uint16_t* snd = (uint16_t*)stream;
+    uint16_t vol_l = (global_sound_volume / 60.0) * 32767;
     len /= sizeof(*snd);
     for(int i = 0; i < len; i++) {
         if(global_sound_freq == 0) {
             snd[i] = 0;
             continue;
         }
-        snd[i] = (global_sound_volume / 60.0) * 32767 * sin(s_time);
-
-        s_time += global_sound_freq * M_PI * 2 / AUDIO_FREQUENCY;
-        if(s_time >= M_PI * 2)
-            s_time -= M_PI * 2;
+        if(AUDIO_WAVE_TYPE) {
+            snd[i] = sine(snd) > 0 ? vol_l : -vol_l;
+        } else {
+            snd[i] = vol_l * sine(snd);
+        }
     }
 }
 
