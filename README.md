@@ -6,10 +6,10 @@ Based on [Flipper Zero Firmware](https://github.com/flipperdevices/flipperzero-f
 
 ## Requirements
 A linux system\
-Packages `make`, `gcc`, `libncurses5`
+Packages `make`, `gcc`, `libsdl2-dev`
 
 ## Usage
-`npm start` will generate the `out` executable.
+`npm start` will generate the `out_<app name>/<app name>` executable.
 
 ## Limitations
 - The main function cannot be called `main`
@@ -21,11 +21,14 @@ Packages `make`, `gcc`, `libncurses5`
 - Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
 
 ## What's supported so far:
-- Canvas and viewports (no elements yet though...)
-- Input (partially)
+- Canvas and viewports (no icons)
+- Input
 - Some core functions
 - Records
 - Vibration
+- FuriStrings
+- Timers
+- Crashing
 
 ## TODOs
 - [x] Use ~~GTK~~ SDL instead of ncurses
