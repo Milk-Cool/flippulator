@@ -41,6 +41,7 @@ int main() {
 }`);
     fs.writeFileSync(join(tmpdir(), "flippulator_temp_out_app_dir"), "out_" + manifest.appid + "/");
     fs.writeFileSync(join(tmpdir(), "flippulator_temp_out_app_name"), manifest.appid);
+    fs.writeFileSync(join(tmpdir(), "flippulator_temp_cc_extra"), "\"-DFLIPPULATOR_APP_NAME=\\\"" + (manifest.name || "Flippulator") + "\\\"\"");
     
     spawn("make", [], {
         "cwd": process.cwd(),

@@ -241,7 +241,7 @@ void gui_add_view_port(Gui* gui, ViewPort* view_port, GuiLayer layer) {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Init(SDL_INIT_AUDIO);
     SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer);
-    SDL_SetWindowTitle(window, "Flippulator");
+    SDL_SetWindowTitle(window, FLIPPULATOR_APP_NAME);
 
     SDL_zero(audio_spec);
     audio_spec.freq = AUDIO_FREQUENCY;

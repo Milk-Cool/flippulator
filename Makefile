@@ -9,6 +9,7 @@ SRC_APP = $(shell find $(APP) -name "*.c")
 #OBJECTS = ${subst .c,.o,$(SOURCES)}
 OUT_DIR = $(shell cat /tmp/flippulator_temp_out_app_dir)
 OUT_APP_NAME = $(shell cat /tmp/flippulator_temp_out_app_name)
+CC_EXTRA = $(shell cat /tmp/flippulator_temp_cc_extra)
 OUT_APP = $(OUT_DIR)$(OUT_APP_NAME)
 SRC_FONT = haxrcorp-4089.ttf
 OUT_FONT = $(OUT_DIR)haxrcorp-4089.ttf
@@ -32,7 +33,7 @@ $(OUT_DIR): $(OUT_APP) $(SRC_FONT)
 
 $(OUT_APP):
 	mkdir $(OUT_DIR)
-	$(CC_PREFIX_FINAL) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -lm -o $(OUT_APP)
+	$(CC_PREFIX_FINAL) $(CC_EXTRA) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -lm -o $(OUT_APP)
 
 #$(BUILD_LIB_heatshrink):
 #	make -C lib/heatshrink libraries
