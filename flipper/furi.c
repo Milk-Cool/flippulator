@@ -10,9 +10,13 @@ void furi_check(void* expr) {
 }*/
 
 void furi_init() {
+    printf("Started initializing...\n");
     if(!furi_record_status()) {
         furi_record_init();
+        printf("Initialized records.\n");
     }
     gui_srv(NULL);
+    printf("Initialized the GUI service.\n");
     notification_srv_init();
+    printf("Initialized the notification service.\n");
 }

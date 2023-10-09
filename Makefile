@@ -24,6 +24,7 @@ BUILD_LIB_heatshrink = $(BUILD_LIB_heatshrink_PATH)libheatshrink_static.a $(BUIL
 #CC_PREFIX = clang -c
 CR_TEXT = \
 	"The FontStruction “HaxrCorp 4089” (https://fontstruct.com/fontstructions/show/192981) by “sahwar” is licensed under a Creative Commons Attribution Share Alike license (http://creativecommons.org/licenses/by-sa/3.0/)."
+WASM_DIR = wasm/
 
 all: $(OUT_ALL)
 
@@ -47,4 +48,11 @@ $(OUT_APP):
 #	$(CC_PREFIX) -I$(HELPERS) -g $< -o $@
 
 clean:
-	rm -rf $(OUT_DIR) $(APP)
+	rm -rf $(OUT_DIR) $(APP) $(WASM_DIR)
+
+$(WASM_DIR):
+	mkdir $(WASM_DIR)
+
+wasm: $(WASM_DIR)
+	emcc -O2 $(SOURCES) $(SRC_APP) $(CC_EXTRA) -g -s WASM=1 -s USE_SDL=2 -s USE_SDL_TTF=2 --preload-file $(SRC_FONT) -o $(WASM_DIR)index.html -I$(LIBS) -I$(LIBS_HAL) -I$(EXT_LIB_ALL) -I$(HELPERS)
+

@@ -153,3 +153,6 @@ libflipper.a
 
 # App copy
 flippulator_app_copy/
+
+# WASM build
+wasm/

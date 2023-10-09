@@ -15,3 +15,8 @@
 #else
 #define AUDIO_WAVE_TYPE 1
 #endif
+
+// WebAssembly defines
+#if defined(__EMSCRIPTEN__) || defined(__wasm__) || defined(__wasm32__) || defined(__wasm64__)
+#define FLIPPULATOR_USES_WEBASSEMBLY
+#endif

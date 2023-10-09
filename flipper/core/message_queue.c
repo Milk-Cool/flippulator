@@ -1,5 +1,7 @@
 #include "message_queue.h"
 #include "core_defines.h"
+#include "kernel.h"
+#include <flippulator_defines.h>
 
 FuriMessageQueue* furi_message_queue_alloc(uint32_t msg_count, uint32_t msg_size) {
     FuriMessageQueue* queue = (FuriMessageQueue*) malloc(12 + msg_count * msg_size);
@@ -36,6 +38,9 @@ FuriStatus furi_message_queue_get(FuriMessageQueue* queue, void* msg_ptr, uint32
     memcpy(msg_ptr, queue + 12, size);
     memcpy(queue + 12, queue + 12 + size, size * pointer);
     ((uint32_t*) queue)[0] -= 1;
+    #ifdef FLIPPULATOR_USES_WEBASSEMBLY
+    furi_delay_us(1);
+    #endif
     return FuriStatusOk;
 }
 

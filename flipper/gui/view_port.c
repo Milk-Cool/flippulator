@@ -3,6 +3,9 @@
 #include "gui.h"
 #include "gui_i.h"
 
+#include <furi.h>
+#include <flippulator_defines.h>
+
 static const InputKey view_port_input_mapping[ViewPortOrientationMAX][InputKeyMAX] = {
     {InputKeyUp,
      InputKeyDown,
@@ -92,7 +95,9 @@ void view_port_input_callback_set(ViewPort* view_port, ViewPortInputCallback cal
 }
 
 void view_port_update(ViewPort* view_port) {
-    // Do nothing
+    #ifdef FLIPPULATOR_USES_WEBASSEMBLY
+    furi_delay_us(1);
+    #endif
 }
 
 // TODO: other methods
