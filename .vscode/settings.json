@@ -28,7 +28,11 @@
         "type_traits": "c",
         "utility": "c",
         "notification_app.h": "c",
-        "furi_hal_speaker.h": "c"
+        "furi_hal_speaker.h": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "thread": "c",
+        "cblas.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

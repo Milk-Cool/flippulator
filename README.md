@@ -27,6 +27,9 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - Records
 - Vibration
 - FuriStrings
+- FuriThreads
+- FuriSemaphores
+- FuriMutexes
 - Timers
 - Crashing
 
