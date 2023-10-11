@@ -32,7 +32,8 @@
         "string_view": "c",
         "initializer_list": "c",
         "thread": "c",
-        "cblas.h": "c"
+        "cblas.h": "c",
+        "message_queue.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

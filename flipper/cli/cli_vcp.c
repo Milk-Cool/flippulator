@@ -23,7 +23,7 @@ static void* rx_get(void* ctx_) {
 
 static void cli_vcp_init() {
     initialized = true;
-    connected = false;
+    connected = true;
 }
 
 static void cli_vcp_deinit() {
@@ -44,8 +44,9 @@ static size_t cli_vcp_rx(uint8_t* buffer, size_t size, uint32_t timeout) {
 }
 
 static void cli_vcp_tx(const uint8_t* buffer, size_t size) {
-    for(size_t i = 0; i < size; i++)
-        putchar(buffer[i]);
+    // fwrite(buffer, 1, size, stdout);
+    for(unsigned int i = 0; i < size; i++)
+        printf("%c", (char)buffer[i]);
 }
 
 static void cli_vcp_tx_stdout(const char* data, size_t size) {

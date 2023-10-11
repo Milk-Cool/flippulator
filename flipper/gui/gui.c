@@ -10,6 +10,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <math.h>
 #include <flippulator_defines.h>
+#include <termios.h>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -21,6 +22,8 @@ extern float global_sound_freq;
 extern float global_sound_volume;
 extern uint8_t global_led[3];
 extern uint8_t global_backlight_brightness;
+
+extern struct termios global_old_tio;
 
 static SDL_Renderer* renderer;
 static SDL_Window* window;
@@ -34,6 +37,7 @@ static bool running = true;
 static float s_time = 0;
 
 #include <stdio.h>
+#include <termios.h>
 
 Gui* gui_alloc() {
     Gui* gui = malloc(sizeof(Gui));
@@ -46,6 +50,7 @@ void exit_sdl(uint8_t code) {
     // SDL_DestroyRenderer(renderer);
     // SDL_DestroyWindow(window);
     // SDL_Quit();
+    tcsetattr(STDIN_FILENO, TCSANOW, &global_old_tio);
     exit(code);
 }
 

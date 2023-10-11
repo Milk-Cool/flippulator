@@ -33,8 +33,22 @@ const APP_COPY = "flippulator_app_copy";
     await exec(`cp -r "${folder}"/* "${APP_COPY}"`);
     const { stdout } = await exec("python3 manifest.py " + join(APP_COPY, "application.fam"));
     const manifest = JSON.parse(stdout.trim());
-    fs.appendFileSync(join(APP_COPY, manifest.appid + ".c"), `
+    fs.writeFileSync(join(APP_COPY, manifest.appid + ".c"), `
+#include <termios.h>
+#include <signal.h>
+extern struct termios global_old_tio, global_new_tio;
+
+` + fs.readFileSync(join(APP_COPY, manifest.appid + ".c"), "utf-8") + `
+void sigint_handler(int p) {
+    UNUSED(p);
+    exit_sdl(0);
+}
 int main() {
+    signal(SIGINT, sigint_handler);
+    tcgetattr(STDIN_FILENO, &global_old_tio);
+    global_new_tio = global_old_tio;
+    global_new_tio.c_lflag &= (~ICANON & ~ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &global_new_tio);
     furi_init();
     ${manifest.entry_point}(NULL);
     exit_sdl(0);

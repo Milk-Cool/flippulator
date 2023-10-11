@@ -129,6 +129,12 @@ void cli_session_close(Cli* cli);
 
 bool cli_is_connected(Cli* cli);
 
+/** Init the CLI service
+ * @param  p context
+ * @return int32_t
+*/
+int32_t cli_srv(void* p);
+
 #ifdef __cplusplus
 }
 #endif

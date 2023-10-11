@@ -13,7 +13,7 @@ typedef struct {
 
 static void* acquire_cb(void* ctx_) {
     FuriMutexCtx* ctx = ctx_;
-    while(furi_mutex_get_owner(ctx->mutex) != NULL)
+    while((uint64_t)furi_mutex_get_owner(ctx->mutex) != MUTEX_NO_OWNER)
         furi_delay_tick(1);
     ctx->mutex->owner = (uint64_t)ctx->id;
     done = true;

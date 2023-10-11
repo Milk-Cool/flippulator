@@ -32,6 +32,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - FuriMutexes
 - Timers
 - Crashing
+- CLI (although very limited)
 
 ## TODOs
 - [x] Use ~~GTK~~ SDL instead of ncurses

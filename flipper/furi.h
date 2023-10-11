@@ -14,8 +14,4 @@
 #include "core/mutex.h"
 #include "core/semaphore.h"
 
-// Services
-#include "gui/gui_srv.h"
-#include "notification/notification_app.h"
-
 void furi_init();
