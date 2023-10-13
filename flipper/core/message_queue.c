@@ -36,7 +36,7 @@ FuriStatus furi_message_queue_get(FuriMessageQueue* queue, void* msg_ptr, uint32
     const uint32_t size = ((uint32_t*) queue)[2];
     if(pointer == 0) return FuriStatusError;
     memcpy(msg_ptr, queue + 12, size);
-    memcpy(queue + 12, queue + 12 + size, size * pointer);
+    memcpy(queue + 12, queue + 12 + size, size * (pointer - 1));
     ((uint32_t*) queue)[0] -= 1;
     #ifdef FLIPPULATOR_USES_WEBASSEMBLY
     furi_delay_us(1);

@@ -12,6 +12,9 @@
 // Close to ISO, `date +'%Y-%m-%d %H:%M:%S %u'`
 #define CLI_DATE_FORMAT "%.4d-%.2d-%.2d %.2d:%.2d:%.2d %d"
 
+extern uint8_t global_led[3];
+extern uint8_t global_backlight_brightness;
+
 void cli_command_info_callback(const char* key, const char* value, bool last, void* context) {
     UNUSED(last);
     UNUSED(context);
@@ -325,7 +328,6 @@ void cli_command_led(Cli* cli, FuriString* args, void* context) {
     UNUSED(cli);
     UNUSED(context);
     // Get first word as light name
-    NotificationMessage notification_led_message;
     FuriString* light_name;
     light_name = furi_string_alloc();
     size_t ws = furi_string_search_char(args, ' ');
@@ -338,21 +340,6 @@ void cli_command_led(Cli* cli, FuriString* args, void* context) {
         furi_string_right(args, ws);
         furi_string_trim(args);
     }
-    // Check light name
-    if(!furi_string_cmp(light_name, "r")) {
-        notification_led_message.type = NotificationMessageTypeLedRed;
-    } else if(!furi_string_cmp(light_name, "g")) {
-        notification_led_message.type = NotificationMessageTypeLedGreen;
-    } else if(!furi_string_cmp(light_name, "b")) {
-        notification_led_message.type = NotificationMessageTypeLedBlue;
-    } else if(!furi_string_cmp(light_name, "bl")) {
-        notification_led_message.type = NotificationMessageTypeLedDisplayBacklight;
-    } else {
-        cli_print_usage("led", "<r|g|b|bl> <0-255>", furi_string_get_cstr(args));
-        furi_string_free(light_name);
-        return;
-    }
-    furi_string_free(light_name);
     // Read light value from the rest of the string
     char* end_ptr;
     uint32_t value = strtoul(furi_string_get_cstr(args), &end_ptr, 0);
@@ -361,19 +348,22 @@ void cli_command_led(Cli* cli, FuriString* args, void* context) {
         return;
     }
 
-    // Set led value
-    notification_led_message.data.led.value = value;
 
-    // Form notification sequence
-    const NotificationSequence notification_sequence = {
-        &notification_led_message,
-        NULL,
-    };
-
-    // Send notification
-    NotificationApp* notification = furi_record_open(RECORD_NOTIFICATION);
-    notification_message(notification, &notification_sequence);
-    furi_record_close(RECORD_NOTIFICATION);
+    // Check light name
+    if(!furi_string_cmp(light_name, "r")) {
+        global_led[0] = value;
+    } else if(!furi_string_cmp(light_name, "g")) {
+        global_led[1] = value;
+    } else if(!furi_string_cmp(light_name, "b")) {
+        global_led[2] = value;
+    } else if(!furi_string_cmp(light_name, "bl")) {
+        global_backlight_brightness = value;
+    } else {
+        cli_print_usage("led", "<r|g|b|bl> <0-255>", furi_string_get_cstr(args));
+        furi_string_free(light_name);
+        return;
+    }
+    furi_string_free(light_name);
 }
 
 /*void cli_command_ps(Cli* cli, FuriString* args, void* context) {
