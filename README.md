@@ -30,6 +30,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - FuriThreads
 - FuriSemaphores
 - FuriMutexes
+- FuriPubSubs
 - Timers
 - Crashing
 - CLI (although very limited)

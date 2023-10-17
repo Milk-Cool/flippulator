@@ -13,5 +13,6 @@
 #include "core/check.h"
 #include "core/mutex.h"
 #include "core/semaphore.h"
+#include "core/pubsub.h"
 
 void furi_init();
