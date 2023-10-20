@@ -34,7 +34,7 @@ $(OUT_DIR): $(OUT_APP) $(SRC_FONT)
 
 $(OUT_APP):
 	mkdir $(OUT_DIR)
-	$(CC_PREFIX_FINAL) $(CC_EXTRA) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -lm -o $(OUT_APP)
+	$(CC_PREFIX_FINAL) $(CC_EXTRA) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -lm -lbsd -o $(OUT_APP)
 
 #$(BUILD_LIB_heatshrink):
 #	make -C lib/heatshrink libraries

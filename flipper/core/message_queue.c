@@ -1,6 +1,7 @@
 #include "message_queue.h"
 #include "core_defines.h"
 #include "kernel.h"
+#include "check.h"
 #include <flippulator_defines.h>
 
 FuriMessageQueue* furi_message_queue_alloc(uint32_t msg_count, uint32_t msg_size) {
@@ -16,11 +17,13 @@ FuriMessageQueue* furi_message_queue_alloc(uint32_t msg_count, uint32_t msg_size
 }
 
 void furi_message_queue_free(FuriMessageQueue* queue) {
+    furi_assert(queue);
     free(queue);
 }
 
 FuriStatus furi_message_queue_put(FuriMessageQueue* queue, const void* msg_ptr, uint32_t timeout) {
     UNUSED(timeout);
+    furi_assert(queue);
     const uint32_t pointer = ((uint32_t*) queue)[0];
     const uint32_t count = ((uint32_t*) queue)[1];
     const uint32_t size = ((uint32_t*) queue)[2];
@@ -32,6 +35,7 @@ FuriStatus furi_message_queue_put(FuriMessageQueue* queue, const void* msg_ptr, 
  
 FuriStatus furi_message_queue_get(FuriMessageQueue* queue, void* msg_ptr, uint32_t timeout) {
     UNUSED(timeout);
+    furi_assert(queue);
     const uint32_t pointer = ((uint32_t*) queue)[0];
     const uint32_t size = ((uint32_t*) queue)[2];
     if(pointer == 0) return FuriStatusError;
@@ -45,22 +49,27 @@ FuriStatus furi_message_queue_get(FuriMessageQueue* queue, void* msg_ptr, uint32
 }
 
 uint32_t furi_message_queue_get_capacity(FuriMessageQueue* queue) {
+    furi_assert(queue);
     return ((uint32_t*) queue)[1];
 }
 
 uint32_t furi_message_queue_get_message_size(FuriMessageQueue* queue) {
+    furi_assert(queue);
     return ((uint32_t*) queue)[2];
 }
 
 uint32_t furi_message_queue_get_count(FuriMessageQueue* queue) {
+    furi_assert(queue);
     return ((uint32_t*) queue)[0];
 }
 
 uint32_t furi_message_queue_get_space(FuriMessageQueue* queue) {
+    furi_assert(queue);
     return furi_message_queue_get_capacity(queue) - furi_message_queue_get_count(queue);
 }
 
 FuriStatus furi_message_queue_reset(FuriMessageQueue* queue) {
+    furi_assert(queue);
     ((uint32_t*) queue)[0] = 0;
     return FuriStatusOk;
 }

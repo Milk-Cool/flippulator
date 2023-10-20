@@ -424,6 +424,9 @@ void storage_get_next_filename(
     FuriString* nextfilename,
     uint8_t max_len);
 
+
+int32_t storage_srv(void* p);
+
 #ifdef __cplusplus
 }
 #endif

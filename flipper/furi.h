@@ -14,5 +14,6 @@
 #include "core/mutex.h"
 #include "core/semaphore.h"
 #include "core/pubsub.h"
+#include "core/event_flag.h"
 
 void furi_init();

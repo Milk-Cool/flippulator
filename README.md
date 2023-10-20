@@ -31,6 +31,8 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - FuriSemaphores
 - FuriMutexes
 - FuriPubSubs
+- FuriEventFlags
+- FuriApiLocks
 - Timers
 - Crashing
 - CLI (although very limited)
@@ -39,6 +41,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - [x] Use ~~GTK~~ SDL instead of ncurses
 - [ ] Write support for FuriTypes (FuriString, FuriMutex, etc.)
 - [ ] Add settings to the notification service
+- [ ] Storage CLI
 
 
 ### Uhm, akstually, it is not an emulator 🤓☝️...

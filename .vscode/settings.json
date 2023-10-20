@@ -34,7 +34,14 @@
         "thread": "c",
         "cblas.h": "c",
         "message_queue.h": "c",
-        "args.h": "c"
+        "args.h": "c",
+        "typeinfo": "cpp",
+        "cstdio": "c",
+        "dirent.h": "c",
+        "kernel.h": "c",
+        "semaphore.h": "c",
+        "pubsub.h": "c",
+        "string": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

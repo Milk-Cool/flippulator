@@ -3,11 +3,11 @@
 
 #define furi_assert( ... ) \
     if(!(__VA_ARGS__)) \
-        crash(CRASH_ASSERT_FAILED, "Assertion failed!");
+        crash(CRASH_ASSERT_FAILED, CRASHTEXT_ASSERT_FAILED);
 
 #define furi_check( ... ) \
     if(!(__VA_ARGS__)) \
-        crash(CRASH_CHECK_FAILED, "Check failed!");
+        crash(CRASH_CHECK_FAILED, CRASHTEXT_CHECK_FAILED);
 
 #define furi_crash( ... ) \
-    crash(CRASH_UNKNOWN, "Unknown error!");
+    crash(CRASH_UNKNOWN, CRASHTEXT_UNKNOWN);

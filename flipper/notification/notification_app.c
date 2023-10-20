@@ -74,7 +74,7 @@ static void* notification_cb(void* ctx) {
                     case NotificationMessageTypeLcdContrastUpdate:
                         break;
                     default:
-                        crash(CRASH_UNKNOWN_NOTIFICATION_MESSAGE_TYPE, "Unknown notification type");
+                        crash(CRASH_UNKNOWN_NOTIFICATION_MESSAGE_TYPE, CRASHTEXT_UNKNOWN_NOTIFICATION_MESSAGE_TYPE);
                 }
                 notification_message = (*message.sequence)[++notification_message_index];
             }

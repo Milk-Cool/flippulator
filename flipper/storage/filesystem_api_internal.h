@@ -1,5 +1,7 @@
 #pragma once
 #include <furi.h>
+#include <stdio.h>
+#include <dirent.h>
 #include "filesystem_api_defines.h"
 
 #ifdef __cplusplus
@@ -15,6 +17,8 @@ typedef enum {
 
 /** Structure that hold file index and returned api errors */
 struct File {
+    FILE* file; /**< File sturct */
+    DIR* dir;
     uint32_t file_id; /**< File ID for internal references */
     FileType type;
     FS_Error error_id; /**< Standard API error from FS_Error enum */
