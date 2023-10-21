@@ -61,4 +61,4 @@ struct NotificationApp {
 
 void notification_message_save_settings(NotificationApp* app);
 
-void notification_srv_init();
+int notification_srv(void* p);

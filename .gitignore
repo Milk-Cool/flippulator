@@ -156,3 +156,6 @@ flippulator_app_copy/
 
 # WASM build
 wasm/
+
+# GDB history
+.gdb_history

@@ -17,12 +17,15 @@ static NotificationApp* notification_app_alloc() {
     return app;
 }
 
-static void* notification_cb(void* ctx) {
-    NotificationApp* app = ctx;
+int notification_srv(void* p) {
+    UNUSED(p);
+    NotificationApp* app = notification_app_alloc();
+    furi_record_create(RECORD_NOTIFICATION, app);
     NotificationAppMessage message;
     while(true)
         if(furi_message_queue_get(app->queue, &message, 100) == FuriStatusOk) {
             // printf("%d %lu %lu %lu\n", notification_sequence == NULL ? 1 : 0, sizeof(notification_sequence) / sizeof(NotificationMessage), sizeof(notification_sequence), sizeof(NotificationMessage));
+            if(message.sequence == NULL) continue;
             uint32_t notification_message_index = 0;
             const NotificationMessage* notification_message = (*message.sequence)[notification_message_index];
             while(notification_message != NULL) {
@@ -79,12 +82,4 @@ static void* notification_cb(void* ctx) {
                 notification_message = (*message.sequence)[++notification_message_index];
             }
         } else furi_delay_ms(1);
-    return NULL;
-}
-
-void notification_srv_init() {
-    NotificationApp* app = notification_app_alloc();
-    furi_record_create(RECORD_NOTIFICATION, app);
-    pthread_t thread;
-    pthread_create(&thread, NULL, notification_cb, app);
 }

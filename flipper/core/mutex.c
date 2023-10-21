@@ -4,11 +4,10 @@
 #include "kernel.h"
 #include <time.h>
 
-static bool done;
-
 typedef struct {
     FuriMutex* mutex;
     FuriThreadId id;
+    bool* done;
 } FuriMutexCtx;
 
 static void* acquire_cb(void* ctx_) {
@@ -16,7 +15,7 @@ static void* acquire_cb(void* ctx_) {
     while((uint64_t)furi_mutex_get_owner(ctx->mutex) != MUTEX_NO_OWNER)
         furi_delay_tick(1);
     ctx->mutex->owner = (uint64_t)ctx->id;
-    done = true;
+    (*ctx->done) = true;
     return NULL;
 }
 
@@ -36,14 +35,14 @@ void furi_mutex_free(FuriMutex* instance) {
 FuriStatus furi_mutex_acquire(FuriMutex* instance, uint32_t timeout) {
     pthread_t thread_id;
     FuriThreadId id = furi_thread_get_current_id();
-    FuriMutexCtx ctx = { instance, (FuriThreadId)id };
-    done = false;
+    bool done = false;
+    FuriMutexCtx ctx = { instance, (FuriThreadId)id, &done };
     pthread_create(&thread_id, NULL, acquire_cb, &ctx);
     uint64_t start_time = (uint64_t)time(NULL);
     while(true) {
         furi_delay_tick(1);
         if(done) return FuriStatusOk;
-        if((uint64_t)time(NULL) >= start_time + timeout) {
+        if((uint64_t)time(NULL) >= start_time + timeout / 1000.0) {
             pthread_cancel(thread_id);
             return FuriStatusErrorTimeout;
         }

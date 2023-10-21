@@ -4,11 +4,10 @@
 #include <time.h>
 #include <string.h>
 
-static bool done;
-
 typedef struct {
     FuriSemaphore* semaphore;
     FuriThreadId id;
+    bool* done;
 } FuriSemaphoreCtx;
 
 FuriSemaphore* furi_semaphore_alloc(uint32_t max_count, uint32_t initial_count) {
@@ -26,7 +25,7 @@ static void* acquire_cb(void* ctx_) {
     while(furi_semaphore_get_count(ctx->semaphore) == ctx->semaphore->max)
         furi_delay_tick(1);
     ctx->semaphore->owners[ctx->semaphore->count++] = (uint64_t)ctx->id;
-    done = true;
+    (*ctx->done) = true;
     return NULL;
 }
 
@@ -42,14 +41,14 @@ FuriStatus furi_semaphore_acquire(FuriSemaphore* instance, uint32_t timeout) {
 
     pthread_t thread_id;
     FuriThreadId id = furi_thread_get_current_id();
-    FuriSemaphoreCtx ctx = { instance, (FuriThreadId)id };
-    done = false;
+    bool done = false;
+    FuriSemaphoreCtx ctx = { instance, (FuriThreadId)id, &done };
     pthread_create(&thread_id, NULL, acquire_cb, &ctx);
     uint64_t start_time = (uint64_t)time(NULL);
     while(true) {
         furi_delay_tick(1);
         if(done) return FuriStatusOk;
-        if((uint64_t)time(NULL) >= start_time + timeout) {
+        if((uint64_t)time(NULL) >= start_time + timeout / 1000.0) {
             pthread_cancel(thread_id);
             return FuriStatusErrorTimeout;
         }

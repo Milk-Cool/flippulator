@@ -20,3 +20,6 @@
 #if defined(__EMSCRIPTEN__) || defined(__wasm__) || defined(__wasm32__) || defined(__wasm64__)
 #define FLIPPULATOR_USES_WEBASSEMBLY
 #endif
+
+// Service starter defines
+#define FLIPPULATOR_WAIT_SERVICES_MS 100

@@ -41,7 +41,10 @@
         "kernel.h": "c",
         "semaphore.h": "c",
         "pubsub.h": "c",
-        "string": "c"
+        "string": "c",
+        "filesystem_api_internal.h": "c",
+        "gui_srv.h": "c",
+        "flippulator_defines.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

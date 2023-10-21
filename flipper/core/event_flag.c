@@ -37,18 +37,17 @@ uint32_t furi_event_flag_get(FuriEventFlag* instance) {
     return *instance;
 }
 
-bool done;
-
 typedef struct {
     FuriEventFlag* flag;
     uint32_t val;
+    bool* done;
 } FuriEventFlagCtx;
 
 static void* acquire_cb(void* ctx_) {
     FuriEventFlagCtx* ctx = ctx_;
     while((*ctx->flag) != ctx->val)
         furi_delay_tick(1);
-    done = true;
+    (*ctx->done) = true;
     return NULL;
 }
 
@@ -60,15 +59,15 @@ uint32_t furi_event_flag_wait(
     UNUSED(options);
 
     furi_assert(instance);
-    done = false;
+    bool done = false;
     pthread_t thread_id;
-    FuriEventFlagCtx ctx = { instance, flags };
+    FuriEventFlagCtx ctx = { instance, flags, &done };
     pthread_create(&thread_id, NULL, acquire_cb, &ctx);
     uint64_t start_time = (uint64_t)time(NULL);
     while(true) {
         furi_delay_tick(1);
         if(done) break;
-        if((uint64_t)time(NULL) >= start_time + timeout) {
+        if((uint64_t)time(NULL) >= start_time + timeout / 1000.0) {
             pthread_cancel(thread_id);
             return 0;
         }

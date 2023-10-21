@@ -424,20 +424,6 @@ void cli_session_close(Cli* cli) {
     furi_check(furi_mutex_release(cli->mutex) == FuriStatusOk);
 }
 
-static void* cli_loop(void* ctx) {
-    Cli* cli = ctx;
-    cli_motd();
-    cli_prompt(cli);
-    while(true) {
-        if(cli->session != NULL) {
-            cli_process_input(cli);
-        } else {
-            furi_check(furi_semaphore_acquire(cli->idle_sem, FuriWaitForever) == FuriStatusOk);
-        }
-    }
-    return NULL;
-}
-
 int32_t cli_srv(void* p) {
     UNUSED(p);
     Cli* cli = cli_alloc();
@@ -461,8 +447,15 @@ int32_t cli_srv(void* p) {
 
     cli_session_open(cli, &cli_vcp);
 
-    pthread_t loop;
-    pthread_create(&loop, NULL, cli_loop, cli);
+    cli_motd();
+    cli_prompt(cli);
+    while(true) {
+        if(cli->session != NULL) {
+            cli_process_input(cli);
+        } else {
+            furi_check(furi_semaphore_acquire(cli->idle_sem, FuriWaitForever) == FuriStatusOk);
+        }
+    }
 
     return 0;
 }

@@ -102,23 +102,6 @@ void storage_tick(Storage* app) {
     }
 }
 
-typedef struct StorageLoopCtx {
-    Storage* app;
-    StorageMessage* message;
-} StorageLoopCtx;
-
-static void* storage_loop(void* ctx_) {
-    StorageLoopCtx* ctx = ctx_;
-    while(1) {
-        if(furi_message_queue_get(ctx->app->message_queue, ctx->message, STORAGE_TICK) == FuriStatusOk) {
-            storage_process_message(ctx->app, ctx->message);
-        } else {
-            storage_tick(ctx->app);
-        }
-    }
-    return NULL;
-}
-
 int32_t storage_srv(void* p) {
     UNUSED(p);
     Storage* app = storage_app_alloc();
@@ -126,9 +109,13 @@ int32_t storage_srv(void* p) {
 
     StorageMessage message;
 
-    StorageLoopCtx loopctx = { app, &message };
-    pthread_t storage_srv_thread;
-    pthread_create(&storage_srv_thread, NULL, storage_loop, &loopctx);
+    while(1) {
+        if(furi_message_queue_get(app->message_queue, &message, STORAGE_TICK) == FuriStatusOk) {
+            storage_process_message(app, &message);
+        } else {
+            storage_tick(app);
+        }
+    }
     
     return 0;
 }

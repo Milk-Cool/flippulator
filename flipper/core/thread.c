@@ -65,6 +65,8 @@ FuriThread* furi_thread_alloc() {
     threads[threads_i] = thread;
     threads_i++;
 
+    furi_thread_set_state(thread, FuriThreadStateStopped);
+
     return thread;
 }
 

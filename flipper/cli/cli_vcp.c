@@ -6,18 +6,18 @@
 static bool initialized = false;
 static bool connected = false;
 
-static bool rx_done;
-static size_t rx_size;
 typedef struct {
     uint8_t* buffer;
     size_t size;
+    bool* done;
+    size_t* out_size;
 } RxData;
 static void* rx_get(void* ctx_) {
     RxData* ctx = ctx_;
-    for(; rx_size < ctx->size; rx_size++) {
-        ctx->buffer[rx_size] = getchar();
+    for(; *ctx->out_size < ctx->size; (*ctx->out_size)++) {
+        ctx->buffer[*ctx->out_size] = getchar();
     }
-    rx_done = true;
+    (*ctx->done) = true;
     return NULL;
 }
 
@@ -31,10 +31,10 @@ static void cli_vcp_deinit() {
 }
 
 static size_t cli_vcp_rx(uint8_t* buffer, size_t size, uint32_t timeout) {
-    rx_done = false;
-    rx_size = 0;
+    bool rx_done = false;
+    size_t rx_size = 0;
     pthread_t rx_thread_id;
-    RxData ctx = { buffer, size };
+    RxData ctx = { buffer, size, &rx_done, &rx_size };
     pthread_create(&rx_thread_id, NULL, rx_get, &ctx);
     uint64_t start_time = (uint64_t)time(NULL);
     while(!rx_done && (uint64_t)time(NULL) < start_time + timeout)
