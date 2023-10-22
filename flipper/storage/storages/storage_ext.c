@@ -91,7 +91,7 @@ static bool storage_ext_file_open(
         FILE* tmp_file = fopen(furi_string_get_cstr(path_str), "r");
         if(tmp_file != NULL) {
             fclose(tmp_file);
-            unlink(furi_string_get_cstr(path_str));
+            return false;
         }
     }
     if(open_mode & FSOM_CREATE_ALWAYS) {
