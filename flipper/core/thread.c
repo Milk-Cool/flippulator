@@ -1,5 +1,6 @@
 #include "thread.h"
 #include "string.h"
+#include <limits.h>
 
 #define THREADS_MAX 1024
 
@@ -55,10 +56,13 @@ static void furi_thread_set_state(FuriThread* thread, FuriThreadState state) {
 
 FuriThread* furi_thread_alloc() {
     FuriThread* thread = malloc(sizeof(FuriThread));
+
+    thread->task_handle = (TaskHandle_t)SIZE_MAX;
+
     thread->output.buffer = furi_string_alloc();
     thread->is_service = false;
 
-    furi_thread_set_appid(thread, "unknown");
+    furi_thread_set_appid(thread, FLIPPULATOR_APP_ID);
 
     thread->heap_trace_enabled = false;
 
@@ -179,11 +183,11 @@ typedef struct {
     void* ctx;
 } ThreadCbPlusCtx;
 
-static void* run(void* ctx_) {
+/*static void* run(void* ctx_) {
     ThreadCbPlusCtx* ctx = ctx_;
     ctx->cb(ctx->ctx);
     return NULL;
-}
+}*/
 
 void furi_thread_start(FuriThread* thread) {
     furi_assert(thread);
@@ -194,8 +198,9 @@ void furi_thread_start(FuriThread* thread) {
     furi_thread_set_state(thread, FuriThreadStateStarting);
 
     pthread_t thread_id;
-    ThreadCbPlusCtx ctx = { thread->callback, thread->context };
-    pthread_create(&thread_id, NULL, run, &ctx);
+    // ThreadCbPlusCtx ctx = { thread->callback, thread->context };
+    // pthread_create(&thread_id, NULL, run, &ctx);
+    pthread_create(&thread_id, NULL, (void *(*)(void *))thread->callback, thread->context);
     thread->task_handle = (TaskHandle_t)thread_id;
 
     furi_check(thread->task_handle);
@@ -206,6 +211,7 @@ void furi_thread_cleanup_tcb_event(TaskHandle_t task) {
 }
 
 bool furi_thread_join(FuriThread* thread) {
+    // printf("0x%lx\n", (unsigned long)thread->task_handle);
     int32_t res = (int32_t)pthread_join((pthread_t)thread->task_handle, NULL);
     thread->ret = res;
     return res == 0;
@@ -247,7 +253,7 @@ FuriThreadId furi_thread_get_current_id() {
 FuriThread* furi_thread_get_current() {
     FuriThreadId id = furi_thread_get_current_id();
     for(unsigned int i = 0; i < THREADS_MAX; i++)
-        if((FuriThreadId)threads[i]->task_handle == id)
+        if(threads[i] != NULL && (FuriThreadId)threads[i]->task_handle == id)
             return threads[i];
     return NULL;
 }
@@ -299,21 +305,21 @@ uint32_t furi_thread_enumerate(FuriThreadId* thread_array, uint32_t array_items)
 
 const char* furi_thread_get_name(FuriThreadId thread_id) {
     for(unsigned int i = 0; i < THREADS_MAX; i++)
-        if((FuriThreadId)threads[i]->task_handle == thread_id)
+        if(threads[i] != NULL && (FuriThreadId)threads[i]->task_handle == thread_id)
             return threads[i]->name;
     return NULL;
 }
 
 const char* furi_thread_get_appid(FuriThreadId thread_id) {
     for(unsigned int i = 0; i < THREADS_MAX; i++)
-        if((FuriThreadId)threads[i]->task_handle == thread_id)
+        if(threads[i] != NULL && (FuriThreadId)threads[i]->task_handle == thread_id)
             return threads[i]->appid;
     return NULL;
 }
 
 uint32_t furi_thread_get_stack_space(FuriThreadId thread_id) {
     for(unsigned int i = 0; i < THREADS_MAX; i++)
-        if((FuriThreadId)threads[i]->task_handle == thread_id)
+        if(threads[i] != NULL && (FuriThreadId)threads[i]->task_handle == thread_id)
             return threads[i]->stack_size;
     return 0;
 }
@@ -364,7 +370,7 @@ int32_t furi_thread_stdout_flush() {
 
 void furi_thread_suspend(FuriThreadId thread_id) {
     for(unsigned int i = 0; i < THREADS_MAX; i++)
-        if((FuriThreadId)threads[i]->task_handle == thread_id) {
+        if(threads[i] != NULL && (FuriThreadId)threads[i]->task_handle == thread_id) {
             // pthread_suspend_np(threads[i]->task_handle);
             // TODO: furi log
             threads[i]->suspended = true;
@@ -373,7 +379,7 @@ void furi_thread_suspend(FuriThreadId thread_id) {
 
 void furi_thread_resume(FuriThreadId thread_id) {
     for(unsigned int i = 0; i < THREADS_MAX; i++)
-        if((FuriThreadId)threads[i]->task_handle == thread_id) {
+        if(threads[i] != NULL && (FuriThreadId)threads[i]->task_handle == thread_id) {
             // pthread_unsuspend_np(threads[i]->task_handle);
             // TODO: furi log
             threads[i]->suspended = false;
@@ -382,7 +388,7 @@ void furi_thread_resume(FuriThreadId thread_id) {
 
 bool furi_thread_is_suspended(FuriThreadId thread_id) {
     for(unsigned int i = 0; i < THREADS_MAX; i++)
-        if((FuriThreadId)threads[i]->task_handle == thread_id)
+        if(threads[i] != NULL && (FuriThreadId)threads[i]->task_handle == thread_id)
             return threads[i]->suspended;
     return false;
 }

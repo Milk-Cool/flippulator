@@ -19,6 +19,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 
 ## Known issues
 - Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
+- Storage calls might interact with the outer filesystem
 
 ## What's supported so far:
 - Canvas and viewports (no icons)
@@ -42,6 +43,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - [ ] Write support for FuriTypes (FuriString, FuriMutex, etc.)
 - [ ] Add settings to the notification service
 - [ ] Storage CLI
+- [ ] Remove code duplicating in storage_ext.c and storage_int.c
 
 
 ### Uhm, akstually, it is not an emulator 🤓☝️...

@@ -44,7 +44,9 @@
         "string": "c",
         "filesystem_api_internal.h": "c",
         "gui_srv.h": "c",
-        "flippulator_defines.h": "c"
+        "flippulator_defines.h": "c",
+        "thread-shared-types.h": "c",
+        "h_recursive_mkdir.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

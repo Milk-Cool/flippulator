@@ -5,7 +5,7 @@
             "intelliSenseMode": "gcc-x64",
             "includePath": ["${workspaceFolder}/flipper", "${workspaceFolder}/helpers",
             "${workspaceFolder}/lib", "${workspaceFolder}/flipper_hal"],
-            "defines": ["FLIPPULATOR_APP_NAME"]
+            "defines": ["FLIPPULATOR_APP_NAME", "FLIPPULATOR_APP_ID"]
         }
     ],
     "version": 4

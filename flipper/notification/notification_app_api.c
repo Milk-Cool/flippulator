@@ -8,5 +8,4 @@ void notification_message(NotificationApp* app, const NotificationSequence* sequ
     NotificationAppMessage m = {
         .type = NotificationLayerMessage, .sequence = sequence/*, .back_event = NULL*/};
     furi_check(furi_message_queue_put(app->queue, &m, FuriWaitForever) == FuriStatusOk);
-    furi_delay_ms(1000);
 };

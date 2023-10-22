@@ -159,3 +159,6 @@ wasm/
 
 # GDB history
 .gdb_history
+
+# Storage
+flippulator_sd

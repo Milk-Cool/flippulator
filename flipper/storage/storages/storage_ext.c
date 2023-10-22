@@ -4,10 +4,11 @@
 #include "sd_notify.h"
 #include <sys/stat.h>
 #include <dirent.h>
+#include <errno.h>
+#include <h_recursive_mkdir.h>
+#include <toolbox/path.h>
 
 #define TAG "StorageExt"
-
-static struct stat st;
 
 /******************* Core Functions *******************/
 
@@ -70,22 +71,34 @@ static bool storage_ext_file_open(
     FS_OpenMode open_mode) {
     UNUSED(ctx);
 
-    FuriString* mode_str = furi_string_alloc_set_str("b");
+    FuriString* mode_str = furi_string_alloc_set_str("");
     FuriString* path_str = furi_string_alloc_set_str("flippulator_sd/ext");
-    if(stat(furi_string_get_cstr(path_str), &st) == -1)
-        mkdir(furi_string_get_cstr(path_str), 0700);
+    
+    furi_string_cat(path_str, path);
 
-    if(access_mode & FSAM_READ) furi_string_cat(mode_str, "r");
-    if(access_mode & FSAM_WRITE) furi_string_cat(mode_str, "w");
+    FuriString* dir_path_str = furi_string_alloc();
+    path_extract_dirname(furi_string_get_cstr(path_str), dir_path_str);
+    mkdir_rec(furi_string_get_cstr(dir_path_str));
+    free(dir_path_str);
+
+    if((access_mode & FSAM_READ) && (access_mode & FSAM_WRITE)) furi_string_cat(mode_str, "w+");
+    else if(access_mode & FSAM_READ) furi_string_cat(mode_str, "r");
+    else if(access_mode & FSAM_WRITE) furi_string_cat(mode_str, "w");
     if(open_mode & FSOM_OPEN_EXISTING) furi_string_cat(mode_str, "x");
     if(open_mode & FSOM_OPEN_ALWAYS);
     if(open_mode & FSOM_OPEN_APPEND) furi_string_cat(mode_str, "a");
-    if(open_mode & FSOM_CREATE_NEW) crash(CRASH_STORAGE_FILE_UNSUPPORTED, CRASHTEXT_STORAGE_FILE_UNSUPPORTED);
-    if(open_mode & FSOM_CREATE_ALWAYS);
+    if(open_mode & FSOM_CREATE_NEW) crash(CRASH_STORAGE_FILE_UNSUPPORTED, CRASHTEXT_STORAGE_FILE_UNSUPPORTED); // TODO: support
+    if(open_mode & FSOM_CREATE_ALWAYS) {
+        /* create file */
+        FILE* tmp_file = fopen(furi_string_get_cstr(path_str), "a");
+        if(tmp_file == NULL) return false;
+        fclose(tmp_file);
+    }
 
-    furi_string_cat(path_str, path);
+    furi_string_cat(mode_str, "b");
 
     file->file = fopen(furi_string_get_cstr(path_str), furi_string_get_cstr(mode_str));
+    if(file->file == NULL) return false;
     file->type = FileTypeOpenFile;
 
     furi_string_free(mode_str);
@@ -157,8 +170,9 @@ static bool storage_ext_file_eof(void* ctx, File* file) {
 static bool storage_ext_dir_open(void* ctx, File* file, const char* path) {
     UNUSED(ctx);
     FuriString* path_str = furi_string_alloc_set_str("flippulator_sd/ext");
+    struct stat st;
     if(stat(furi_string_get_cstr(path_str), &st) == -1)
-        mkdir(furi_string_get_cstr(path_str), 0700);
+        mkdir(furi_string_get_cstr(path_str), 0777);
 
     furi_string_cat(path_str, path);
 
@@ -209,12 +223,17 @@ static bool storage_ext_dir_rewind(void* ctx, File* file) {
 static FS_Error storage_ext_common_stat(void* ctx, const char* path, FileInfo* fileinfo) {
     FuriString* path_str = furi_string_alloc_set_str("flippulator_sd/ext");
     furi_string_cat(path_str, path);
+    struct stat st;
     if(stat(furi_string_get_cstr(path_str), &st) == -1)
         return FSE_NOT_EXIST;
-    stat(furi_string_get_cstr(path_str), &st);
     
-    fileinfo->flags = S_ISREG(st.st_mode) ? 0 : FSF_DIRECTORY;
-    fileinfo->size = st.st_size;
+    if(fileinfo) {
+        if(S_ISDIR(st.st_mode))
+            fileinfo->flags = FSF_DIRECTORY;
+        else
+            fileinfo->flags = 0;
+        fileinfo->size = st.st_size;
+    }
 
     free(path_str);
     return FSE_OK;

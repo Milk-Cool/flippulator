@@ -2,6 +2,10 @@
 #include <m-list.h>
 #include <m-dict.h>
 
+const char* blocked_msg = "Blocked a potential attempt to access the outer filesystem.";
+
+#define CHECK_BLOCKED(str) if(strstr(str, "..") != NULL) { printf("%s\n", blocked_msg); break; }
+
 #define STORAGE_PATH_PREFIX_LEN 4u
 _Static_assert(
     sizeof(STORAGE_ANY_PATH_PREFIX) == STORAGE_PATH_PREFIX_LEN + 1,
@@ -539,6 +543,7 @@ void storage_process_message_internal(Storage* app, StorageMessage* message) {
     case StorageCommandFileOpen:
         path = furi_string_alloc_set(message->data->fopen.path);
         storage_process_alias(app, path, message->data->fopen.thread_id, true);
+        CHECK_BLOCKED(furi_string_get_cstr(path))
         message->return_data->bool_value = storage_process_file_open(
             app,
             message->data->fopen.file,
@@ -593,6 +598,7 @@ void storage_process_message_internal(Storage* app, StorageMessage* message) {
 
     // Dir operations
     case StorageCommandDirOpen:
+        CHECK_BLOCKED(furi_string_get_cstr(path))
         path = furi_string_alloc_set(message->data->dopen.path);
         storage_process_alias(app, path, message->data->dopen.thread_id, true);
         message->return_data->bool_value =
@@ -634,11 +640,13 @@ void storage_process_message_internal(Storage* app, StorageMessage* message) {
         message->return_data->error_value = storage_process_common_remove(app, path);
         break;
     case StorageCommandCommonMkDir:
+        CHECK_BLOCKED(furi_string_get_cstr(path))
         path = furi_string_alloc_set(message->data->path.path);
         storage_process_alias(app, path, message->data->path.thread_id, true);
         message->return_data->error_value = storage_process_common_mkdir(app, path);
         break;
     case StorageCommandCommonFSInfo:
+        CHECK_BLOCKED(furi_string_get_cstr(path))
         path = furi_string_alloc_set(message->data->cfsinfo.fs_path);
         storage_process_alias(app, path, message->data->cfsinfo.thread_id, false);
         message->return_data->error_value = storage_process_common_fs_info(

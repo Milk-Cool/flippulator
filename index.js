@@ -50,7 +50,13 @@ int main() {
     global_new_tio.c_lflag &= (~ICANON & ~ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &global_new_tio);
     furi_init();
-    ${manifest.entry_point}(NULL);
+    
+    FuriThread* thr = furi_thread_alloc();
+    furi_thread_set_callback(thr, ${manifest.entry_point});
+    furi_thread_set_stack_size(thr, ${manifest.stack_size});
+    furi_thread_start(thr);
+    furi_thread_join(thr);
+    
     exit_sdl(0);
 }`);
     fs.writeFileSync(join(tmpdir(), "flippulator_temp_out_app_dir"), "out_" + manifest.appid + "/");
