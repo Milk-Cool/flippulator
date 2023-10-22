@@ -87,7 +87,13 @@ static bool storage_ext_file_open(
     if(open_mode & FSOM_OPEN_EXISTING) furi_string_cat(mode_str, "x");
     if(open_mode & FSOM_OPEN_ALWAYS);
     if(open_mode & FSOM_OPEN_APPEND) furi_string_cat(mode_str, "a");
-    if(open_mode & FSOM_CREATE_NEW) crash(CRASH_STORAGE_FILE_UNSUPPORTED, CRASHTEXT_STORAGE_FILE_UNSUPPORTED); // TODO: support
+    if(open_mode & FSOM_CREATE_NEW) {
+        FILE* tmp_file = fopen(furi_string_get_cstr(path_str), "r");
+        if(tmp_file != NULL) {
+            fclose(tmp_file);
+            unlink(furi_string_get_cstr(path_str));
+        }
+    }
     if(open_mode & FSOM_CREATE_ALWAYS) {
         /* create file */
         FILE* tmp_file = fopen(furi_string_get_cstr(path_str), "a");
