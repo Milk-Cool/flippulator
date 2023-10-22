@@ -107,7 +107,7 @@ static void* input_loop(void* _view_port) {
     while(running) {
         for(uint8_t i = 0; i < BUTTONS_COUNT; i++) {
             if(!held_down[i]) continue;
-            if(held_time[i] % INPUT_PRESS_TICKS == 0) {
+            if(held_time[i] % INPUT_PRESS_TICKS == 0 && held_time[i] != 0) {
                 InputEvent* e = malloc(sizeof(InputEvent));
                 e->key = key_map[i];
                 uint32_t presses = held_time[i] / INPUT_PRESS_TICKS;
