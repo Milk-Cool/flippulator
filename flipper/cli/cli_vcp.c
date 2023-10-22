@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <time.h>
+#include <gui/gui.h>
 
 static bool initialized = false;
 static bool connected = false;
@@ -15,7 +16,9 @@ typedef struct {
 static void* rx_get(void* ctx_) {
     RxData* ctx = ctx_;
     for(; *ctx->out_size < ctx->size; (*ctx->out_size)++) {
-        ctx->buffer[*ctx->out_size] = getchar();
+        char c = getchar();
+        if(c == 4) exit_sdl(0);
+        ctx->buffer[*ctx->out_size] = c;
     }
     (*ctx->done) = true;
     return NULL;

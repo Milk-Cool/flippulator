@@ -46,7 +46,8 @@
         "gui_srv.h": "c",
         "flippulator_defines.h": "c",
         "thread-shared-types.h": "c",
-        "h_recursive_mkdir.h": "c"
+        "h_recursive_mkdir.h": "c",
+        "notification_messages.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"

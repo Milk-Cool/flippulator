@@ -41,7 +41,8 @@ extern struct termios global_old_tio, global_new_tio;
 ` + fs.readFileSync(join(APP_COPY, manifest.appid + ".c"), "utf-8") + `
 void sigint_handler(int p) {
     UNUSED(p);
-    exit_sdl(0);
+    // do nothing
+    // exit_sdl(0);
 }
 int main() {
     signal(SIGINT, sigint_handler);
