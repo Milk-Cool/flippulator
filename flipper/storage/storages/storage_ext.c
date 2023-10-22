@@ -125,7 +125,7 @@ static bool storage_ext_file_close(void* ctx, File* file) {
 static uint16_t
     storage_ext_file_read(void* ctx, File* file, void* buff, uint16_t const bytes_to_read) {
     UNUSED(ctx);
-    return (uint16_t)fread(file->file, 1, bytes_to_read, buff);
+    return (uint16_t)fread(buff, 1, bytes_to_read, file->file);
 }
 
 static uint16_t
