@@ -37,6 +37,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - Timers
 - Crashing
 - CLI (although very limited)
+- Storage
 
 ## TODOs
 - [x] Use ~~GTK~~ SDL instead of ncurses
