@@ -3,6 +3,7 @@
 // Settings
 #define FLIPPULATOR_HQ_AUDIO
 // #define FLIPPULATOR_SINE_WAVE
+#define FLIPPULATOR_CUSTOM_MOTD
 
 // Audio defines
 #ifdef FLIPPULATOR_HQ_AUDIO

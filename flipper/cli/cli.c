@@ -2,6 +2,8 @@
 #include "cli_commands.h"
 #include "cli_vcp.h"
 
+#include <flippulator_defines.h>
+
 #include <furi_hal_rtc.h>
 
 #include <pthread.h>
@@ -103,8 +105,30 @@ void cli_print_usage(const char* cmd, const char* usage, const char* arg) {
 }
 
 void cli_motd() {
+    #ifdef FLIPPULATOR_CUSTOM_MOTD
     printf("Welcome to the Flippulator CLI!\r\n");
     printf("Type `help` for help.\r\n");
+    #else
+    printf("\r\n"
+           "              _.-------.._                    -,\r\n"
+           "          .-\"```\"--..,,_/ /`-,               -,  \\ \r\n"
+           "       .:\"          /:/  /'\\  \\     ,_...,  `. |  |\r\n"
+           "      /       ,----/:/  /`\\ _\\~`_-\"`     _;\r\n"
+           "     '      / /`\"\"\"'\\ \\ \\.~`_-'      ,-\"'/ \r\n"
+           "    |      | |  0    | | .-'      ,/`  /\r\n"
+           "   |    ,..\\ \\     ,.-\"`       ,/`    /\r\n"
+           "  ;    :    `/`\"\"\\`           ,/--==,/-----,\r\n"
+           "  |    `-...|        -.___-Z:_______J...---;\r\n"
+           "  :         `                           _-'\r\n"
+           " _L_  _     ___  ___  ___  ___  ____--\"`___  _     ___\r\n"
+           "| __|| |   |_ _|| _ \\| _ \\| __|| _ \\   / __|| |   |_ _|\r\n"
+           "| _| | |__  | | |  _/|  _/| _| |   /  | (__ | |__  | |\r\n"
+           "|_|  |____||___||_|  |_|  |___||_|_\\   \\___||____||___|\r\n"
+           "\r\n"
+           "Welcome to Flipper Zero Command Line Interface!\r\n"
+           "Read Manual https://docs.flipperzero.one\r\n"
+           "\r\n");
+    #endif
 }
 
 void cli_nl(Cli* cli) {
