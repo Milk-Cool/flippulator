@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <h_recursive_mkdir.h>
 #include <toolbox/path.h>
+#include <unistd.h>
 
 #define TAG "StorageExt"
 
@@ -107,7 +108,7 @@ static uint64_t storage_int_file_tell(void* ctx, File* file) {
 
 static bool storage_int_file_truncate(void* ctx, File* file) {
     UNUSED(ctx);
-    crash(CRASH_UNSUPPORTED_FS_OPERATION, CRASHTEXT_UNSUPPORTED_FS_OPERATION);
+    return ftruncate(fileno(file->file), storage_int_file_tell(ctx, file)) == 0;
     return false;
 }
 
