@@ -6,7 +6,7 @@ Based on [Flipper Zero Firmware](https://github.com/flipperdevices/flipperzero-f
 
 ## Requirements
 A linux system\
-Packages `make`, `gcc`, `libsdl2-dev`
+Packages `make`, `gcc`, `libsdl2-dev:i386`, `gcc-12-multilib` (or an alternative that's compatible with your current gcc version), `libbsd-dev:i386`
 
 ## Usage
 `npm start` will generate the `out_<app name>/<app name>` executable.
@@ -16,6 +16,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 - `furi.h` must be included
 - Right now, only the `InputTypePress` and `InputTypeRelease` input types are supported
 - A variable cannot be named `time`
+- Integer types like `long unsigned int` do not have the same size as they do on the flipper. **If you care about integer sizes, use `intXX_t` and `uintXX_t`!**
 
 ## Known issues
 - Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault

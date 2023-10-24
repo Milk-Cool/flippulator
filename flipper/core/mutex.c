@@ -12,9 +12,9 @@ typedef struct {
 
 static void* acquire_cb(void* ctx_) {
     FuriMutexCtx* ctx = ctx_;
-    while((uint64_t)furi_mutex_get_owner(ctx->mutex) != MUTEX_NO_OWNER)
+    while((size_t)furi_mutex_get_owner(ctx->mutex) != MUTEX_NO_OWNER)
         furi_delay_tick(1);
-    ctx->mutex->owner = (uint64_t)ctx->id;
+    ctx->mutex->owner = (size_t)ctx->id;
     (*ctx->done) = true;
     return NULL;
 }
@@ -51,12 +51,12 @@ FuriStatus furi_mutex_acquire(FuriMutex* instance, uint32_t timeout) {
 }
 
 FuriStatus furi_mutex_release(FuriMutex* instance) {
-    if(instance->owner != (uint64_t)furi_thread_get_current_id())
+    if(instance->owner != (size_t)furi_thread_get_current_id())
         return FuriStatusError;
     instance->owner = MUTEX_NO_OWNER;
     return FuriStatusOk;
 }
 
 FuriThreadId furi_mutex_get_owner(FuriMutex* instance) {
-    return (FuriThreadId)instance->owner;;
+    return (FuriThreadId)instance->owner;
 }

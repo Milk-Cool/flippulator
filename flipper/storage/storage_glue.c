@@ -128,7 +128,7 @@ void* storage_get_storage_file_data(const File* file, StorageData* storage) {
 
 void storage_push_storage_file(File* file, FuriString* path, StorageData* storage) {
     StorageFile* storage_file = StorageFileList_push_new(storage->files);
-    file->file_id = (uint32_t)((uint64_t)storage_file);
+    file->file_id = (uint32_t)storage_file;
     storage_file->file = file;
     furi_string_set(storage_file->path, path);
 }

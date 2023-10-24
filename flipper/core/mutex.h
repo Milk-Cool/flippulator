@@ -6,9 +6,8 @@
 
 #include "base.h"
 #include "thread.h"
-#include <limits.h>
 
-#define MUTEX_NO_OWNER ULLONG_MAX
+#define MUTEX_NO_OWNER 0xFFFFFFFF
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,8 +19,8 @@ typedef enum {
 } FuriMutexType;
 
 typedef struct {
-    uint64_t type;
-    uint64_t owner;
+    size_t type;
+    size_t owner;
 } FuriMutex;
 
 /** Allocate FuriMutex
