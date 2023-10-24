@@ -16,13 +16,11 @@ Packages `make`, `gcc`, `libsdl2-dev:i386`, `gcc-12-multilib` (or an alternative
 - `furi.h` must be included
 - Right now, only the `InputTypePress` and `InputTypeRelease` input types are supported
 - A variable cannot be named `time`
-- Integer types like `long unsigned int` do not have the same size as they do on the flipper. **If you care about integer sizes, use `intXX_t` and `uintXX_t`!**
-- The above issue also affects format specifiers like `%lu`.
+- The `%lu` and `%ld` format specifiers expect just `long unsigned int`, so `uint32_t`s (defined as `unsigned int`s) and `int32`s (defined as `int`s) won't work with them despite having the same size 
 
 ## Known issues
 - Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
 - Storage calls might interact with the outer filesystem
-- It builds an x64 app, which is not good since the Flipper Zero apps are 32-bit
 
 ## What's supported so far:
 - Canvas and viewports (no icons)

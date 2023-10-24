@@ -91,7 +91,8 @@
         "stdexcept": "c",
         "stop_token": "c",
         "streambuf": "c",
-        "cinttypes": "c"
+        "cinttypes": "c",
+        "inttypes.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
