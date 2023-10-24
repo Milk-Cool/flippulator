@@ -20,6 +20,7 @@ Packages `make`, `gcc`, `libsdl2-dev`
 ## Known issues
 - Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
 - Storage calls might interact with the outer filesystem
+- It builds an x64 app, which is not good since the Flipper Zero apps are 32-bit
 
 ## What's supported so far:
 - Canvas and viewports (no icons)
