@@ -1,8 +1,10 @@
 on:
-  - deployment
-  - deployment_status
-  - issue_comment
-  - issues
+  push:
+    branches: [ "main" ]
+  issue_comment:
+    types: [created, deleted]
+  issues:
+    types: [opened, edited, deleted]
 jobs:
   notify:
     runs-on: ubuntu-latest
