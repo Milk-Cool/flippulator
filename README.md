@@ -49,8 +49,13 @@ Packages `make`, `gcc`, `libsdl2-dev:i386`, `gcc-12-multilib` (or an alternative
 - [ ] Storage CLI
 - [ ] Remove code duplicating in storage_ext.c and storage_int.c
 
+## FAQs
+> *Q: How does the application tell if it's running in Flippulator?*
 
-### Uhm, akstually, it is not an emulator 🤓☝️...
+A: Flippulator defines `_FLIPPULATOR` and the app can use `#ifdef` to tell in which environment it's running.
+
+
+## Uhm, akstually, it is not an emulator 🤓☝️...
 Yes, it is not. It just compiles flipper applications for your computer.
 
 ## Credits and copyrights
