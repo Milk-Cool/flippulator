@@ -16,11 +16,10 @@ Packages `make`, `gcc`, `libsdl2-dev:i386`, `gcc-12-multilib` (or an alternative
 - `furi.h` must be included
 - Right now, only the `InputTypePress` and `InputTypeRelease` input types are supported
 - A variable cannot be named `time`
-- The `%lu` and `%ld` format specifiers expect just `long unsigned int`, so `uint32_t`s (defined as `unsigned int`s) and `int32`s (defined as `int`s) won't work with them despite having the same size 
+- The `%lu` and `%ld` format specifiers expect just `long unsigned int`, so `uint32_t`s (defined as `unsigned int`s) and `int32`s (defined as `int`s) won't work with them despite having the same size. (As of October 25th, 2023, it does not look like it's possible to fix this. As an alternative, I can suggest using macros like PRIu32.)
 
 ## Known issues
-- Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault
-- Storage calls might interact with the outer filesystem
+- Defining a string as `char* str = "abc"` and then setting its value using snprintf gives you a segfault\
 
 ## What's supported so far:
 - Canvas and viewports (no icons)
