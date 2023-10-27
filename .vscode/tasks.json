@@ -1,0 +1,34 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "Build an application",
+            "command": "bash",
+            "args": [
+                "-i",
+                "-c",
+                "npm start ${input:app_folder}",
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Task to build a Flippulator app."
+        }
+    ],
+    "inputs": [
+        {
+            "id": "app_folder",
+            "description": "App folder:",
+            "default": "test_app",
+            "type": "promptString"
+        }
+    ],
+    "version": "2.0.0"
+}

@@ -8,6 +8,8 @@ const fs = require("fs");
 const { join } = require("path");
 const { tmpdir } = require("os");
 
+const file = process.argv[process.argv.length - 1];
+
 const rl = readline.createInterface({
     "input": process.stdin,
     "output": process.stdout
@@ -18,10 +20,15 @@ const question = text => new Promise(resolve => rl.question(text, resolve));
 const APP_COPY = "flippulator_app_copy";
 
 (async () => {
-    const folder = await question("Enter the application folder name: ");
-    if(!fs.existsSync(folder)) {
-        console.log("Folder does not exist!");
-        process.exit(1);
+    let folder;
+    if(fs.existsSync(file))
+        folder = file;
+    else {
+        const folder = await question("Enter the application folder name: ");
+        if(!fs.existsSync(folder)) {
+            console.log("Folder does not exist!");
+            process.exit(1);
+        }
     }
     if(!fs.existsSync(join(folder, "application.fam"))) {
         console.log("Manifest does not exist!");

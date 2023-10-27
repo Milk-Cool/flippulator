@@ -6,42 +6,42 @@
 #include <furi.h>
 #include <flippulator_defines.h>
 
-static const InputKey view_port_input_mapping[ViewPortOrientationMAX][InputKeyMAX] = {
-    {InputKeyUp,
-     InputKeyDown,
-     InputKeyRight,
-     InputKeyLeft,
-     InputKeyOk,
-     InputKeyBack}, //ViewPortOrientationHorizontal
-    {InputKeyDown,
-     InputKeyUp,
-     InputKeyLeft,
-     InputKeyRight,
-     InputKeyOk,
-     InputKeyBack}, //ViewPortOrientationHorizontalFlip
-    {InputKeyRight,
-     InputKeyLeft,
-     InputKeyDown,
-     InputKeyUp,
-     InputKeyOk,
-     InputKeyBack}, //ViewPortOrientationVertical
-    {InputKeyLeft,
-     InputKeyRight,
-     InputKeyUp,
-     InputKeyDown,
-     InputKeyOk,
-     InputKeyBack}, //ViewPortOrientationVerticalFlip
-};
+// static const InputKey view_port_input_mapping[ViewPortOrientationMAX][InputKeyMAX] = {
+//     {InputKeyUp,
+//      InputKeyDown,
+//      InputKeyRight,
+//      InputKeyLeft,
+//      InputKeyOk,
+//      InputKeyBack}, //ViewPortOrientationHorizontal
+//     {InputKeyDown,
+//      InputKeyUp,
+//      InputKeyLeft,
+//      InputKeyRight,
+//      InputKeyOk,
+//      InputKeyBack}, //ViewPortOrientationHorizontalFlip
+//     {InputKeyRight,
+//      InputKeyLeft,
+//      InputKeyDown,
+//      InputKeyUp,
+//      InputKeyOk,
+//      InputKeyBack}, //ViewPortOrientationVertical
+//     {InputKeyLeft,
+//      InputKeyRight,
+//      InputKeyUp,
+//      InputKeyDown,
+//      InputKeyOk,
+//      InputKeyBack}, //ViewPortOrientationVerticalFlip
+// };
 
-static const InputKey view_port_left_hand_input_mapping[InputKeyMAX] =
-    {InputKeyDown, InputKeyUp, InputKeyLeft, InputKeyRight, InputKeyOk, InputKeyBack};
+// static const InputKey view_port_left_hand_input_mapping[InputKeyMAX] =
+//     {InputKeyDown, InputKeyUp, InputKeyLeft, InputKeyRight, InputKeyOk, InputKeyBack};
 
-static const CanvasOrientation view_port_orientation_mapping[ViewPortOrientationMAX] = {
-    [ViewPortOrientationHorizontal] = CanvasOrientationHorizontal,
-    [ViewPortOrientationHorizontalFlip] = CanvasOrientationHorizontalFlip,
-    [ViewPortOrientationVertical] = CanvasOrientationVertical,
-    [ViewPortOrientationVerticalFlip] = CanvasOrientationVerticalFlip,
-};
+// static const CanvasOrientation view_port_orientation_mapping[ViewPortOrientationMAX] = {
+//     [ViewPortOrientationHorizontal] = CanvasOrientationHorizontal,
+//     [ViewPortOrientationHorizontalFlip] = CanvasOrientationHorizontalFlip,
+//     [ViewPortOrientationVertical] = CanvasOrientationVertical,
+//     [ViewPortOrientationVerticalFlip] = CanvasOrientationVerticalFlip,
+// };
 
 ViewPort* view_port_alloc() {
     ViewPort* view_port = malloc(sizeof(ViewPort));

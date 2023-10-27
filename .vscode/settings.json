@@ -92,7 +92,8 @@
         "stop_token": "c",
         "streambuf": "c",
         "cinttypes": "c",
-        "inttypes.h": "c"
+        "inttypes.h": "c",
+        "notification.h": "c"
     },
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
