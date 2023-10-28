@@ -21,10 +21,10 @@ const APP_COPY = "flippulator_app_copy";
 
 (async () => {
     let folder;
-    if(fs.existsSync(file))
+    if(file != __filename && fs.existsSync(file))
         folder = file;
     else {
-        const folder = await question("Enter the application folder name: ");
+        folder = await question("Enter the application folder name: ");
         if(!fs.existsSync(folder)) {
             console.log("Folder does not exist!");
             process.exit(1);
