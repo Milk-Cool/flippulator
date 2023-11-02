@@ -100,4 +100,14 @@ void view_port_update(ViewPort* view_port) {
     #endif
 }
 
+void view_port_set_orientation(ViewPort* view_port, ViewPortOrientation orientation) {
+    furi_assert(view_port);
+    view_port->orientation = orientation;
+}
+
+ViewPortOrientation view_port_get_orientation(const ViewPort* view_port) {
+    ViewPortOrientation orientation = view_port->orientation;
+    return orientation;
+}
+
 // TODO: other methods

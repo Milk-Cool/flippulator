@@ -81,3 +81,11 @@ void view_port_input_callback_set(
     void* context);
 
 void view_port_update(ViewPort* view_port);
+
+/** Set ViewPort orientation.
+ *
+ * @param      view_port    ViewPort instance
+ * @param      orientation  display orientation, horizontal or vertical.
+ */
+void view_port_set_orientation(ViewPort* view_port, ViewPortOrientation orientation);
+ViewPortOrientation view_port_get_orientation(const ViewPort* view_port);
