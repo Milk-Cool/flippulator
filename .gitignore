@@ -133,8 +133,7 @@ dist
 # CUSTOM ENTRIES
 
 # Object files
-flipper/**/*.o
-helpers/**/*.o
+**/*.o
 
 # Test script
 test.sh
@@ -162,3 +161,6 @@ wasm/
 
 # Storage
 flippulator_sd
+
+# Build timestamps
+timestamps.json
