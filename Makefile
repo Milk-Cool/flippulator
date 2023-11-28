@@ -43,10 +43,10 @@ $(OUT_APP):
 	fi
 #	$(CC_PREFIX_FINAL) $(CC_EXTRA) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) $(SRC_APP) $(SOURCES) -lSDL2 -lSDL2_ttf -lm -lbsd -o $(OUT_APP)
 	for file in $(SRC_APP) $(SOURCES); do \
-		dateextr=`date -r "$$file" +%s`; \
-		datejson=`jq '.["'$$file'"]' $(TIMESTAMPS) | sed 's/"//g'`; \
-		if [ "$$dateextr" != "$$datejson" ]; then \
-			objname=`echo "$$file" | sed 's/\.c/\.o/g'`; \
+		jsout=$$(node compile.js $$file); \
+		objname=$$(echo $$jsout | jq -r '.obj'); \
+		dateextr=$$(echo $$jsout | jq -r '.time'); \
+		if [ $$objname ]; then \
 			$(CC_PREFIX_FINAL) -c $(CC_EXTRA) -I$(LIBS) -I$(LIBS_HAL) -I$(HELPERS) -I$(EXT_LIB_ALL) "$$file" -o $$objname $(CC_POSTFIX_FINAL); \
 			echo CC: $$file = $$objname; \
 			jq '.["'$$file'"] = "'$$dateextr'"' $(TIMESTAMPS) > $(TIMESTAMPS_TMP); mv $(TIMESTAMPS_TMP) $(TIMESTAMPS); \
