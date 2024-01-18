@@ -1,3 +1,7 @@
+# Update
+As you can see, I kinda forgot about this project. It's been nearly three months since the last commit and it's just a simple bugfix.
+If you want to mantain this project, message me on Telegram: @milk_cool
+
 # flippulator
 An emulator for the Flipper Zero\
 Based on [Flipper Zero Firmware](https://github.com/flipperdevices/flipperzero-firmware)
